@@ -27,7 +27,7 @@ def sendEmail (text,type,etat):
 	value = selectValue()
 	msg = MIMEMultipart()
 	msg['From'] = 'supervision.rasberry@gmail.com'
-	msg['To'] = 'catinaud.florian@gmail.com'
+	msg['To'] = 'i.loubani89@gmail.com'
 	msg['Subject'] = 'Probleme Supervision Serveur '+type+' '+etat+' '+str(heure)+':'+str(minute)+'\n'
 	message = debut_email()
 	message = 'Bonjour !'+ '<br />'
@@ -72,21 +72,21 @@ def home():
 		sendEmail('Humidité Trop haute','Humidité','haute')
 	elif  getHumidity() < 5 :
 		sendEmail('Humidité Trop basse','Humidité','basse')
-	if getPressure() > 1200 :
+	if getPressure() > 1114 :
 		sendEmail('Pression Trop haute','Pression','haute')
 	elif getPressure() < 400 :
 		sendEmail('Pression Trop basse','Pression','basse')
 	# -------------------- Insertion de valeur ----------------------
-	# insertValue(str(getTemp()),str(getPressure()),str(getHumidity())) 
+	# insertValue(str(getTemp()),str(getPressure()),str(getHumidity())) 
 
 	# -------------------- Supprimer les valeurs --------------------
 	# deleteValue()
 
 	# -------------------- Supprimer la table info --------------------
-	# deleteTable()
+	# deleteTable()
 
 	# -------------------- Creation de la table info --------------------
-	# createTable()
+	# createTable()
 
 	tableau = selectValue()
 	return render_template(
