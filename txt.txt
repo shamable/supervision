@@ -1,0 +1,12 @@
+CREATE TABLE info (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    horaire datetime,
+    temperature float,
+    pressure float,
+    humidite int);
+
+
+INSERT INTO info (horaire,temperature,pressure,humidite) VALUES (date("now"),35,782,49);
+
+.head on 
+.mode column
