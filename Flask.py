@@ -7,16 +7,9 @@ import os
 from pprint import pprint
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-import smtplib,email,email.encoders,email.mime.text,email.mime.base
+# import smtplib,email,email.encoders,email.mime.text,email.mime.base
 from Database import insertValue,selectValue,deleteValue , deleteTable , createTable , selectSpecificValue
 from templates_email import debut_email , end_email
-# testsupervision2020@gmail.com
-# testsupervision2!
-
-# supervision.rasberry@gmail.com
-# rasberrysupervision2020
-
-# agash.pro@gmail.com , B.PALLIER@hotmail.fr , i.loubani89@gmail.com , gaetan.henriques@outlook.fr
 
 app= Flask(__name__)
 
