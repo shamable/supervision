@@ -7,6 +7,12 @@ from email.mime.text import MIMEText
 from templates_email import debut_email , end_email
 import smtplib
 
+# testsupervision2020@gmail.com
+# testsupervision2!
+
+# supervision.rasberry@gmail.com
+# rasberrysupervision2020
+
 def sendEmail (text,type,etat):
 	jour = datetime.now()
 	heure = jour.hour

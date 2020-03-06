@@ -1,16 +1,18 @@
 <!DOCTYPE html>
-<html lang="fr" dir="ltr">
+<html lang="fr">
 <head>
 	<meta charset="utf-8">
 	<title>{{title}}</title>
-	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/jquery.dataTables.min.css')}}">
-	<link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.min.css')}}" type="text/css">
-		{#<!--<link rel="stylesheet" href="{{url_for('static', filename='css/font-awesome.min.css')}}" type="text/css">
-		<link rel="stylesheet" href="{{url_for('static', filename='css/owl.carousel.min.css')}}" type="text/css">
-		<link rel="stylesheet" href="{{url_for('static', filename='css/magnific-popup.css')}}" type="text/css">
-		<link rel="stylesheet" href="{{url_for('static', filename='css/slicknav.min.css')}}" type="text/css">-->#}
-		<link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}" type="text/css">
-		<link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}" type="text/css">
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/datatables.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/main.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/bootstrap.min.css')}}">
+	<link rel="stylesheet" href="{{url_for('static', filename='css/datable_css/dataTables.bootstrap.css')}}" type="text/css">
+	<link rel="stylesheet" href="{{url_for('static', filename='css/datable_css/dataTables.bootstrap4.css')}}" type="text/css">
+	<link rel="stylesheet" href="{{url_for('static', filename='css/datable_css/dataTables.foundation.css')}}" type="text/css">
+	<link rel="stylesheet" href="{{url_for('static', filename='css/datable_css/dataTables.jqueryui.css')}}" type="text/css">
+	<link rel="stylesheet" href="{{url_for('static', filename='css/datable_css/dataTables.semanticui.css')}}" type="text/css">
+	<link rel="stylesheet" href="{{url_for('static', filename='css/datable_css/jquery.dataTables.css')}}" type="text/css">
 
 		<script type="text/javascript">
 			$(document).ready(function(){
@@ -20,7 +22,7 @@
 		</script>
 	</head>
 	<body><!--style="background-color: #3B3B3B"-->
-		<section class="container" style="background-color: rgba(250,250,250,0.5)">
+		<section class="container" style="background-color: rgba(200,200,200,0.5)">
 			<h2 align="center" style="margin-top:3%;margin-bottom:3%;color:#ff0000">Details du rasberry</h2>
 			<h4 align="center" style="margin-bottom:2%;color:#0000ff">{{ title }}</h4>
 		</section>
@@ -56,17 +58,29 @@
 				</tr>
 				{%endfor%}
 			</table>
-		</section>	
+		</section>
+		<script src="{{url_for('static', filename='js/jquery-3.4.1.js')}}"></script>
+		<script src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
+		<script src="{{url_for('static', filename='js/datatables.js')}}"></script>
+		
+		{#<script src="{{url_for('static', filename='js/main.js')}}"></script>
+
+		<script src="{{url_for('static', filename='js/datatabke_js/dataTables.bootstrap.js')}}"></script>
+		<script src="{{url_for('static', filename='js/datatabke_js/dataTables.bootstrap4.js')}}"></script>
+		<script src="{{url_for('static', filename='js/datatabke_js/dataTables.foundation.js')}}"></script>
+		<script src="{{url_for('static', filename='js/datatabke_js/dataTables.semanticui.js')}}"></script>
+		<script src="{{url_for('static', filename='js/datatabke_js/jquery.dataTables.js')}}"></script>#}
+
 		{#<!--
 		<script src="{{url_for('static', filename='js/jquery.magnific-popup.min.js')}}"></script>
 		<script src="{{url_for('static', filename='js/jquery.slicknav.js')}}"></script>
 		<script src="{{url_for('static', filename='js/owl.carousel.min.js')}}"></script>
-		<script src="{{url_for('static', filename='js/main.js')}}"></script>-->#}
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<script src="{{url_for('static', filename='js/main.js')}}"></script>
+		<script src="{{url_for('static', filename='js/jquery-3.4.1.js')}}"></script>
 		<script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
 		<script src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
-		{#<!--<script src="{{url_for('static', filename='js/jquery-3.3.1.min.js')}}"></script>-->
-		<!--<script type="text/javascript" href="{{url_for('static', filename='js/jquery.dataTables.min.js')}}"></script>
+		<script src="{{url_for('static', filename='js/jquery-3.3.1.min.js')}}"></script>
+		<script type="text/javascript" href="{{url_for('static', filename='js/jquery.dataTables.min.js')}}"></script>
 		-->#}
 		<script type="text/javascript">
 			var element = document.getElementById('ptest');

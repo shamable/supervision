@@ -7,11 +7,6 @@ import os
 from pprint import pprint
 from Database import insertValue , selectValue,deleteValue , deleteTable , createTable , selectSpecificValue
 from envoie_mail import sendEmail
-# testsupervision2020@gmail.com
-# testsupervision2!
-
-# supervision.rasberry@gmail.com
-# rasberrysupervision2020
 
 app= Flask(__name__)
 
@@ -85,4 +80,4 @@ def home():
 		)
 
 if __name__ =="__main__":
-	app.run(debug=False,host=adresseIP(),port='5000')
+	app.run(debug=True,host=adresseIP(),port='5000')
