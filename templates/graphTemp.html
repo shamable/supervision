@@ -75,11 +75,33 @@
             <th align=right><a href='/graphTemp/{{ nextDate }}'><img class="fleches" src='/static/nextDay.png'></a></th>
         </tr>
     </table>#}
+    <canvas id="myChart"></canvas>
     <!--
 <script src="http://visjs.org/dist/vis.js"></script>
 -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
+    let ctx = document.getElementById('myChart').getContext('2d');
+    let chart = new Chart(ctx,{
+        type : 'line',
+
+
+        data: {
+            labels:{{time|tojson}},//
+            
+            datasets : [{
+                label:'My First dataset',
+                backgroundColor:'rgb(255, 99,132)',
+                borderColor:'rgb(255,99,132)',
+                data:{{value}}// {##}
+            }]
+        },
+
+        options :{}
+    })
+</script>
+<!--<script type="text/javascript">
     google.charts.load('current',{'packages':['corechart']});
     google.charts.setOnLoadCallback(drawChart);
 
@@ -88,7 +110,7 @@
         //data.addColumn('Horaire', 'Température');
         data.addColumn('number','Température');
         data.addColumn('datetime','Horaire');
-        data.insertRows([
+        data.addRows([
         {%for row in value %}
             [({{row[0]}}),('{{row[1]}}')],
         {%endfor %}
@@ -111,7 +133,7 @@
         var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
         chart.draw(data, options);
     }
-</script>
+</script>-->
     {#<script type="text/javascript">
       google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawChart);

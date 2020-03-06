@@ -24,7 +24,7 @@ def sendEmail (text,type,etat):
 	jour = datetime.now()
 	heure = jour.hour
 	minute = jour.minute
-	value = selectValue()
+	value = selectValue(False)
 	msg = MIMEMultipart()
 	msg['From'] = 'supervision.rasberry@gmail.com'
 	msg['To'] = 'i.loubani89@gmail.com'
@@ -40,10 +40,10 @@ def sendEmail (text,type,etat):
 		message += 'Le serveur possede un probleme sur l\''+type+' '+str(getHumidity())+' %'
 	elif type == 'Pression':
 		message += 'Le serveur possede un probleme sur la '+type+' '+str(getPressure())+' mBar'
-	# message += '<br />'
-	# message += 'Merci de reglé le probleme'
-	# message += '<br />'
-	# message += 'Florian Catinaud'
+	message += '<br />'
+	message += 'Merci de reglé le probleme'
+	message += '<br />'
+	message += 'Florian Catinaud'
 	message += end_email()
 	msg.attach(MIMEText(message,'html'))
 	mailserver = smtplib.SMTP('smtp.gmail.com', 587)
@@ -59,6 +59,8 @@ def sendEmail (text,type,etat):
 @app.route("/gT/<rep>")
 def graTemp (rep):
 	d=datetime.now()
+	allValue = []
+	allTime = []
 	if rep == "temp":
 		valeur = selectSpecificValue('temperature')
 	elif rep == "humi":
@@ -77,6 +79,12 @@ def graTemp (rep):
 	#dateTitle= strDay+"/"+strMonth+"/"+ str(d.year)
 	#titre = "Statistiques du "+dateTitle
 
+	#print(valeur)
+	for row in valeur:
+		allValue.append(row[0])
+		allTime.append(row[1])
+		print(allValue)
+		print(allTime)
 	ndate = d + timedelta(days=1)
 	pdate = d - timedelta(days=1) 
 	#tempMoy = str(round(moyenneListe(duree),1))
@@ -86,7 +94,8 @@ def graTemp (rep):
 		d = d.strftime("%Y-%m-%d"),
 		titre = titre,
 		temp = getTemp(),
-		value = valeur,
+		value = allValue,
+		time = allTime,
 		prevDate = ndate.strftime("%Y-%m-%d"),
 		nextDate = pdate.strftime("%Y-%m-%d")
 	)
@@ -112,7 +121,7 @@ def home():
 	elif getPressure() < 400 :
 		sendEmail('Pression Trop basse','Pression','basse')
 	# -------------------- Insertion de valeur ----------------------
-	# insertValue(str(getTemp()),str(getPressure()),str(getHumidity())) 
+	insertValue(str(getTemp()),str(getPressure()),str(getHumidity())) 
 
 	# -------------------- Supprimer les valeurs --------------------
 	# deleteValue()
@@ -123,7 +132,7 @@ def home():
 	# -------------------- Creation de la table info --------------------
 	# createTable()
 
-	tableau = selectValue()
+	tableau = selectValue(False)
 	return render_template(
 		"home.html",
 		title = "Supervision salle serveur",

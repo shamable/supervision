@@ -21,22 +21,23 @@ def insertValue(temp,press,humi):
 	conn.close()
 	return
 
-def selectValue():
+def selectValue(debug):
 	valeur = []
 	conn = sqlite3.connect('supervision.db')
 	cur = conn.cursor()
 	req = "SELECT id, pressure, humidite, temperature,strftime('%H:%M',horaire),strftime('%d-%m-%Y',jour) FROM info"
 	result = cur.execute(req)
 	for row in result:
-		#print('Row '+str(row))
+		if debug : 
+			print('Row '+str(row))
 		valeur.append(row)
-	#print(valeur)
 	return valeur
+
 def selectSpecificValue(value):
 	valeur = []
 	conn = sqlite3.connect('supervision.db')
 	cur = conn.cursor()
-	req = "SELECT "+value+",strftime('%H:%M',horaire) FROM info"
+	req = "SELECT "+value+",strftime('%H:%M',horaire) FROM info WHERE jour = date('now')"
 	result = cur.execute(req)
 	for row in result:
 		valeur.append(row)
