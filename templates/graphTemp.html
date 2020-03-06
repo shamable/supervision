@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type">
     <meta charset="utf-8">
     <link rel = "icon" type = "image/png" href = "http://espace-raspberry-francais.fr/ImgStat/Icon.png" />
-    <title>Graph du :{{ d }}</title>
+    <title>Graph du : {{ d }}</title>
     <link href="http://visjs.org/dist/vis.css" rel="stylesheet" type="text/css" />
     <style media="screen" type="text/css">
         body {
@@ -64,21 +64,15 @@
 
     <h1>{{ titre }}</h1><br>
     <br>
-
+    <a style="margin: auto; margin-right: 5%;" href="/">Home</a>
     <div class="" id="curve_chart"></div>
-
-    <hr>
-    <button onclick="drawChart()">test</button>
-    {#<table width=100%>
-        <tr>
-            <th align=left><a href='/graphTemp/{{ prevDate }}'><img class="fleches" src='/static/prevDay.png'></a></th>
-            <th align=right><a href='/graphTemp/{{ nextDate }}'><img class="fleches" src='/static/nextDay.png'></a></th>
-        </tr>
-    </table>#}
     <canvas id="myChart"></canvas>
-    <!--
-<script src="http://visjs.org/dist/vis.js"></script>
--->
+    <table width=100%>
+        <tr>
+            <th align=left><a href='/gT/{{rep}}/{{ prevDate }}'><img class="fleches" src='/static/prevDay.png'></a></th>
+            <th align=right><a href='/gT/{{rep}}/{{ nextDate }}'><img class="fleches" src='/static/nextDay.png'></a></th>
+        </tr>
+    </table>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
@@ -101,68 +95,5 @@
         options :{}
     })
 </script>
-<!--<script type="text/javascript">
-    google.charts.load('current',{'packages':['corechart']});
-    google.charts.setOnLoadCallback(drawChart);
-
-    function drawChart(){
-        var data= new google.visualization.DataTable();
-        //data.addColumn('Horaire', 'Température');
-        data.addColumn('number','Température');
-        data.addColumn('datetime','Horaire');
-        data.addRows([
-        {%for row in value %}
-            [({{row[0]}}),('{{row[1]}}')],
-        {%endfor %}
-        ]);
-        console.log(data);
-        var options = {
-          curveType: 'function',
-          height: 600,
-          backgroundColor : "#F5F5F5",
-          animation:{duration: 1000, easing: 'out'},
-          lineWidth: 5,
-          series: { 0 : {color : "#1565c0"}},
-          legend: {position: 'none'},
-          chartArea: {
-            top: 20,
-            bottom: 60,
-            left:60,
-            right:60}
-        };
-        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
-        chart.draw(data, options);
-    }
-</script>-->
-    {#<script type="text/javascript">
-      google.charts.load('current', {'packages':['corechart']});
-      google.charts.setOnLoadCallback(drawChart);
-      function drawChart() {
-        var data = new google.visualization.DataTable();
-        data.addColumn('timeofday', 'Heure');
-        data.addColumn('number', 'Température');
-      data.addRows([
-         {%for point in points %}
-            [parseInt({{point[0]}}),parseInt({{point[1]}}), {{point[2]}}],
-            {%endfor %}
-      ]);
-        var options = {
-          curveType: 'function',
-          height: 600,
-          backgroundColor : "#F5F5F5",
-          animation:{duration: 1000, easing: 'out'},
-          lineWidth: 5,
-          series: { 0 : {color : "#1565c0"}},
-          legend: {position: 'none'},
-          chartArea: {
-            top: 20,
-            bottom: 60,
-            left:60,
-            right:60}
-        };
-        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
-        chart.draw(data, options);
-      }
-  </script>#}
 </body>
 </html>

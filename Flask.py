@@ -56,42 +56,28 @@ def sendEmail (text,type,etat):
 	print('Envoie de mail à '+msg['To']+' '+str(type)+' '+str(etat))
 	return
 
-@app.route("/gT/<rep>")
-def graTemp (rep):
+@app.route("/gT/<rep>/<date>")
+def graTemp (rep,date):
 	d=datetime.now()
 	allValue = []
 	allTime = []
 	if rep == "temp":
-		valeur = selectSpecificValue('temperature')
+		valeur = selectSpecificValue('temperature',date)
 	elif rep == "humi":
-		valeur = selectSpecificValue('pressure')
+		valeur = selectSpecificValue('pressure',date)
 	elif rep == "press":
-		valeur = selectSpecificValue('humidite')
-
+		valeur = selectSpecificValue('humidite',date)
 	annee=str(d)[:4]
 	titre =" Temperature actuelle : "+ str(getTemp())+ " °C"
-	#strMonth = str(d.month)
-	#strDay = str(d.day)
-	#if len(strMonth) == 1:
-	#	strMonth= "0" + strMonth
-	#if len(strDay) == 1:
-	#	strDay = "0" + strDay
-	#dateTitle= strDay+"/"+strMonth+"/"+ str(d.year)
-	#titre = "Statistiques du "+dateTitle
-
-	#print(valeur)
 	for row in valeur:
 		allValue.append(row[0])
 		allTime.append(row[1])
-		print(allValue)
-		print(allTime)
 	ndate = d + timedelta(days=1)
 	pdate = d - timedelta(days=1) 
-	#tempMoy = str(round(moyenneListe(duree),1))
-	#Moy = str(tempMoy[0])
 	return render_template(
 		'graphTemp.html',
-		d = d.strftime("%Y-%m-%d"),
+		d = d.strftime("%d-%m-%Y"),
+		rep = rep,
 		titre = titre,
 		temp = getTemp(),
 		value = allValue,
@@ -104,10 +90,6 @@ def graTemp (rep):
 def home():
 	d= datetime.now()
 	y = d.strftime('%Y-%m-%d')
-	ndate = d + timedelta(days=1)
-	pdate = d - timedelta(days=1)
-	annee=str(d)[:4]
-	jour=str(d)[:10]
 	if getTemp() > 80: 
 		sendEmail('Temperature Trop haute','temperature','haute')
 	elif getTemp() < 10 :
@@ -121,7 +103,7 @@ def home():
 	elif getPressure() < 400 :
 		sendEmail('Pression Trop basse','Pression','basse')
 	# -------------------- Insertion de valeur ----------------------
-	insertValue(str(getTemp()),str(getPressure()),str(getHumidity())) 
+	# insertValue(str(getTemp()),str(getPressure()),str(getHumidity())) 
 
 	# -------------------- Supprimer les valeurs --------------------
 	# deleteValue()
@@ -139,7 +121,8 @@ def home():
 		temp = getTemp(),
 		humi = getHumidity(),
 		press = getPressure(),
-		value = tableau
+		value = tableau,
+		date = y
 		)
 
 if __name__ =="__main__":

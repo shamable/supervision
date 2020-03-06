@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="fr" dir="ltr">
-	<head>
-		<meta charset="utf-8">
-		<title>{{title}}</title>
-		<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/jquery.dataTables.min.css')}}">
-		<link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.min.css')}}" type="text/css">
+<head>
+	<meta charset="utf-8">
+	<title>{{title}}</title>
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/jquery.dataTables.min.css')}}">
+	<link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.min.css')}}" type="text/css">
 		{#<!--<link rel="stylesheet" href="{{url_for('static', filename='css/font-awesome.min.css')}}" type="text/css">
 		<link rel="stylesheet" href="{{url_for('static', filename='css/owl.carousel.min.css')}}" type="text/css">
 		<link rel="stylesheet" href="{{url_for('static', filename='css/magnific-popup.css')}}" type="text/css">
@@ -20,55 +20,42 @@
 		</script>
 	</head>
 	<body><!--style="background-color: #3B3B3B"-->
-	<section class="container" style="background-color: rgba(250,250,250,0.5)">
-		<h2 align="center" style="margin-top:3%;margin-bottom:3%;color:#ff0000">Details du rasberry</h2>
-		<h4 align="center" style="color:#0000ff">{{ title }}</h4>
-	</section>
-	
-	<div align="center">
-	<a style="margin: auto; margin-right: 5%;" href="/gT/temp">Voir Graph temp</a>
-	<a style="margin: auto; margin-right: 5%;" href="/gT/hum">Voir Graph humidité</a>
-	<a style="margin: auto; " href="/gT/pres">Voir Graph pression</a>
-	</div>
-	<hr>{#
-		<!--<table border="1" align="center" style="margin-bottom: 5%"> 
-			<tr align="center">
-				<td>Temeprature</td>
-				<td>Humidite</td>
-				<td>Pression</td>
-			</tr>
-			<tr align="center">
-				<td>{{ temp }}</td>
-				<td>{{ humi }}</td>
-				<td>{{ press }}</td>
-			</tr>
-		</table>-->#}
+		<section class="container" style="background-color: rgba(250,250,250,0.5)">
+			<h2 align="center" style="margin-top:3%;margin-bottom:3%;color:#ff0000">Details du rasberry</h2>
+			<h4 align="center" style="margin-bottom:2%;color:#0000ff">{{ title }}</h4>
+		</section>
+
+		<div align="center">
+			<a style="margin: auto; margin-right: 5%;" href="/gT/temp/{{date}}">Voir Graph temp</a>
+			<a style="margin: auto; margin-right: 5%;" href="/gT/hum/{{date}}">Voir Graph humidité</a>
+			<a style="margin: auto; " href="/gT/pres/{{date}}">Voir Graph pression</a>
+		</div>
 		<section style="padding :2%;margin-top:2%;background-color: rgba(20,20,20,0.5)">
 			<div align="center">
 				<b>Mettre contraintes des jours sur pour la requete select</b>
 				<p>Avec lien en bas de la page sur le jour d'avant est d'apres</p>
 			</div>
 			<p id="ptest">YOlo</p>
-		<table id="tableinfo" align="center" border="1" >
-			<tr align="center">
-				<td class="sorting_1">#</td>
-				<td class="sorting_1">Temprature</td>
-				<td class="sorting_1">Humidite</td>
-				<td class="sorting_1">Pression</td>
-				<td class="sorting_1">Horaire</td>
-				<td class="sorting_1">Date</td>
-			</tr>
-			{% for row in value %}
-			<tr align="center">
-				<td class="sorting_1">{{row[0]}}</td>
-				<td class="sorting_1">{{row[3]}}</td>
-				<td class="sorting_1">{{row[2]}}</td>
-				<td class="sorting_1">{{row[1]}}</td>
-				<td class="sorting_1">{{row[4]}}</td>
-				<td class="sorting_1">{{row[5]}}</td>
-			</tr>
-			{%endfor%}
-		</table>
+			<table id="tableinfo" align="center" border="1" >
+				<tr align="center">
+					<td class="sorting_1">#</td>
+					<td class="sorting_1">Temprature</td>
+					<td class="sorting_1">Humidite</td>
+					<td class="sorting_1">Pression</td>
+					<td class="sorting_1">Horaire</td>
+					<td class="sorting_1">Date</td>
+				</tr>
+				{% for row in value %}
+				<tr align="center">
+					<td class="sorting_1">{{row[0]}}</td>
+					<td class="sorting_1">{{row[3]}}</td>
+					<td class="sorting_1">{{row[2]}}</td>
+					<td class="sorting_1">{{row[1]}}</td>
+					<td class="sorting_1">{{row[4]}}</td>
+					<td class="sorting_1">{{row[5]}}</td>
+				</tr>
+				{%endfor%}
+			</table>
 		</section>	
 		{#<!--
 		<script src="{{url_for('static', filename='js/jquery.magnific-popup.min.js')}}"></script>
@@ -88,4 +75,4 @@
 		</script>
 
 	</body>
-</html>
+	</html>
