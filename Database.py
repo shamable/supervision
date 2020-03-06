@@ -25,12 +25,23 @@ def selectValue():
 	valeur = []
 	conn = sqlite3.connect('supervision.db')
 	cur = conn.cursor()
-	req = "SELECT id, pressure, humidite, temperature,strftime('%H:%M',horaire),strftime('%d-%m-%Y',jour) as jour FROM info"
+	req = "SELECT id, pressure, humidite, temperature,strftime('%H:%M',horaire),strftime('%d-%m-%Y',jour) FROM info"
 	result = cur.execute(req)
 	for row in result:
 		#print('Row '+str(row))
 		valeur.append(row)
 	#print(valeur)
+	return valeur
+def selectSpecificValue(value):
+	valeur = []
+	conn = sqlite3.connect('supervision.db')
+	cur = conn.cursor()
+	req = "SELECT "+value+",strftime('%H:%M',horaire) FROM info"
+	result = cur.execute(req)
+	for row in result:
+		valeur.append(row)
+		# print('select specific value Row '+str(row))
+	# print(valeur)
 	return valeur
 
 def deleteValue():

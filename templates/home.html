@@ -3,22 +3,15 @@
 	<head>
 		<meta charset="utf-8">
 		<title>{{title}}</title>
-
+		<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/jquery.dataTables.min.css')}}">
 		<link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.min.css')}}" type="text/css">
-		<link rel="stylesheet" href="{{url_for('static', filename='css/font-awesome.min.css')}}" type="text/css">
+		{#<!--<link rel="stylesheet" href="{{url_for('static', filename='css/font-awesome.min.css')}}" type="text/css">
 		<link rel="stylesheet" href="{{url_for('static', filename='css/owl.carousel.min.css')}}" type="text/css">
 		<link rel="stylesheet" href="{{url_for('static', filename='css/magnific-popup.css')}}" type="text/css">
-		<link rel="stylesheet" href="{{url_for('static', filename='css/slicknav.min.css')}}" type="text/css">
+		<link rel="stylesheet" href="{{url_for('static', filename='css/slicknav.min.css')}}" type="text/css">-->#}
 		<link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}" type="text/css">
 		<link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}" type="text/css">
-		<script src="{{url_for('static', filename='js/jquery-3.3.1.min.js')}}"></script>
-		<script src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
-		<script src="{{url_for('static', filename='js/jquery.magnific-popup.min.js')}}"></script>
-		<script src="{{url_for('static', filename='js/jquery.slicknav.js')}}"></script>
-		<script src="{{url_for('static', filename='js/owl.carousel.min.js')}}"></script>
-		<script src="{{url_for('static', filename='js/main.js')}}"></script>
-		<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/jquery.dataTables.min.css')}}">
-		<script type="text/javascript" href="{{url_for('static', filename='js/jquery.min.js')}}"></script>
+
 		<script type="text/javascript">
 			$(document).ready(function(){
 				console.log("ready!");
@@ -31,13 +24,13 @@
 		<h2 align="center" style="margin-top:3%;margin-bottom:3%;color:#ff0000">Details du rasberry</h2>
 		<h4 align="center" style="color:#0000ff">{{ title }}</h4>
 	</section>
-	{#<!--
+	
 	<div align="center">
-	<a style="margin: auto; margin-right: 5%;" href="/gT/2020/temp">Voir Graph temp</a>
-	<a style="margin: auto; margin-right: 5%;" href="/gT/2020/hum">Voir Graph humidité</a>
-	<a style="margin: auto; " href="/gT/2020/pres">Voir Graph pression</a>
+	<a style="margin: auto; margin-right: 5%;" href="/gT/temp">Voir Graph temp</a>
+	<a style="margin: auto; margin-right: 5%;" href="/gT/hum">Voir Graph humidité</a>
+	<a style="margin: auto; " href="/gT/pres">Voir Graph pression</a>
 	</div>
-	<hr>-->
+	<hr>{#
 		<!--<table border="1" align="center" style="margin-bottom: 5%"> 
 			<tr align="center">
 				<td>Temeprature</td>
@@ -50,7 +43,12 @@
 				<td>{{ press }}</td>
 			</tr>
 		</table>-->#}
-		<section style="margin-top:2%;padding-top:3%;background-color: rgba(20,20,20,0.5)">
+		<section style="padding :2%;margin-top:2%;background-color: rgba(20,20,20,0.5)">
+			<div align="center">
+				<b>Mettre contraintes des jours sur pour la requete select</b>
+				<p>Avec lien en bas de la page sur le jour d'avant est d'apres</p>
+			</div>
+			<p id="ptest">YOlo</p>
 		<table id="tableinfo" align="center" border="1" >
 			<tr align="center">
 				<td class="sorting_1">#</td>
@@ -71,11 +69,23 @@
 			</tr>
 			{%endfor%}
 		</table>
-		</section>
-		
+		</section>	
+		{#<!--
+		<script src="{{url_for('static', filename='js/jquery.magnific-popup.min.js')}}"></script>
+		<script src="{{url_for('static', filename='js/jquery.slicknav.js')}}"></script>
+		<script src="{{url_for('static', filename='js/owl.carousel.min.js')}}"></script>
+		<script src="{{url_for('static', filename='js/main.js')}}"></script>-->#}
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+		<script src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
+		{#<!--<script src="{{url_for('static', filename='js/jquery-3.3.1.min.js')}}"></script>-->
+		<!--<script type="text/javascript" href="{{url_for('static', filename='js/jquery.dataTables.min.js')}}"></script>
+		-->#}
 		<script type="text/javascript">
-			var element = document.getElementById('tableinfo');
-			console.log(element);   
+			var element = document.getElementById('ptest');
+			element.innerHTML("Test");
+			console.log(element)  
 		</script>
+
 	</body>
 </html>

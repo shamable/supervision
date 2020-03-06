@@ -8,7 +8,7 @@ from pprint import pprint
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import smtplib,email,email.encoders,email.mime.text,email.mime.base
-from Database import insertValue,selectValue,deleteValue , deleteTable , createTable
+from Database import insertValue,selectValue,deleteValue , deleteTable , createTable , selectSpecificValue
 from templates_email import debut_email , end_email
 # testsupervision2020@gmail.com
 # testsupervision2!
@@ -56,6 +56,41 @@ def sendEmail (text,type,etat):
 	print('Envoie de mail à '+msg['To']+' '+str(type)+' '+str(etat))
 	return
 
+@app.route("/gT/<rep>")
+def graTemp (rep):
+	d=datetime.now()
+	if rep == "temp":
+		valeur = selectSpecificValue('temperature')
+	elif rep == "humi":
+		valeur = selectSpecificValue('pressure')
+	elif rep == "press":
+		valeur = selectSpecificValue('humidite')
+
+	annee=str(d)[:4]
+	titre =" Temperature actuelle : "+ str(getTemp())+ " °C"
+	#strMonth = str(d.month)
+	#strDay = str(d.day)
+	#if len(strMonth) == 1:
+	#	strMonth= "0" + strMonth
+	#if len(strDay) == 1:
+	#	strDay = "0" + strDay
+	#dateTitle= strDay+"/"+strMonth+"/"+ str(d.year)
+	#titre = "Statistiques du "+dateTitle
+
+	ndate = d + timedelta(days=1)
+	pdate = d - timedelta(days=1) 
+	#tempMoy = str(round(moyenneListe(duree),1))
+	#Moy = str(tempMoy[0])
+	return render_template(
+		'graphTemp.html',
+		d = d.strftime("%Y-%m-%d"),
+		titre = titre,
+		temp = getTemp(),
+		value = valeur,
+		prevDate = ndate.strftime("%Y-%m-%d"),
+		nextDate = pdate.strftime("%Y-%m-%d")
+	)
+
 @app.route("/")
 def home():
 	d= datetime.now()
@@ -77,7 +112,7 @@ def home():
 	elif getPressure() < 400 :
 		sendEmail('Pression Trop basse','Pression','basse')
 	# -------------------- Insertion de valeur ----------------------
-	# insertValue(str(getTemp()),str(getPressure()),str(getHumidity())) 
+	# insertValue(str(getTemp()),str(getPressure()),str(getHumidity())) 
 
 	# -------------------- Supprimer les valeurs --------------------
 	# deleteValue()
