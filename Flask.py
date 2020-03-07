@@ -56,7 +56,7 @@ def home():
 		sendEmail('Pression Trop haute','Pression','haute')
 	elif getPressure() < 400 :
 		sendEmail('Pression Trop basse','Pression','basse')
-	
+
 	# -------------------- Insertion de valeur ----------------------
 	# insertValue(str(getTemp()),str(getPressure()),str(getHumidity()))
 
@@ -80,6 +80,7 @@ def home():
 		value = tableau,
 		date = y
 		)
+
 
 if __name__ =="__main__":
 	app.run(debug=True,host=adresseIP(),port='5000')
