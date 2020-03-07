@@ -6,12 +6,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from templates_email import debut_email , end_email
 import smtplib
-
-# testsupervision2020@gmail.com
-# testsupervision2!
-
-# supervision.rasberry@gmail.com
-# rasberrysupervision2020
+from login_email import email,emailMDP, email_TO
 
 def sendEmail (text,type,etat):
 	jour = datetime.now()
@@ -19,8 +14,8 @@ def sendEmail (text,type,etat):
 	minute = jour.minute
 	value = selectValue(False)
 	msg = MIMEMultipart()
-	msg['From'] = 'supervision.rasberry@gmail.com'
-	msg['To'] = 'catiflo18@gmail.com'
+	msg['From'] = email()
+	msg['To'] = email_TO()
 	msg['Subject'] = 'Probleme Supervision Serveur '+type+' '+etat+' '+str(heure)+':'+str(minute)+'\n'
 	message = debut_email()
 	message = 'Bonjour !'+ '<br />'
@@ -43,8 +38,11 @@ def sendEmail (text,type,etat):
 	mailserver.ehlo()
 	mailserver.starttls()
 	mailserver.ehlo()
-	mailserver.login('supervision.rasberry@gmail.com', 'rasberrysupervision2020')
+	mailserver.login(email(),emailMDP())
+	# SI probleme a la ligne 41 c'esst normal 
+	# J'ai mis les mails dans un fichier a part que je ne mais pas dans le git
+	# Pour raison de securité
 	mailserver.sendmail(msg['From'], msg['To'], msg.as_string())
 	mailserver.quit()
-	print('Envoie de mail à '+msg['To']+' '+str(type)+' '+str(etat))
+	print('Envoie de mail à '+msg['To']+' '+str(type))
 	return

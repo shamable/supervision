@@ -57,7 +57,8 @@ def home():
 	elif getPressure() < 400 :
 		sendEmail('Pression Trop basse','Pression','basse')
 	# -------------------- Insertion de valeur ----------------------
-	# insertValue(str(getTemp()),str(getPressure()),str(getHumidity())) 
+	# insertValue(str(getTemp()),str(getPressure()),str(getHumidity()))
+
 
 	# -------------------- Supprimer les valeurs --------------------
 	# deleteValue()
@@ -66,7 +67,7 @@ def home():
 	# deleteTable()
 
 	# -------------------- Creation de la table info --------------------
-	# createTable()
+	# createTable()
 
 	tableau = selectValue(False)
 	return render_template(
