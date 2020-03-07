@@ -27,8 +27,6 @@ def selectValue(debug):
 	cur = conn.cursor()
 	req = "SELECT id, pressure, humidite, temperature,strftime('%H:%M',horaire) as horaire,strftime('%d-%m-%Y',jour) as jour FROM info;"
 	result = cur.execute(req)
-	#if (result == Null):
-	#	return
 	for row in result:
 		if debug : 
 			print('Row '+str(row))
@@ -44,8 +42,6 @@ def selectSpecificValue(value,date):
 	result = cur.execute(req)
 	for row in result:
 		valeur.append(row)
-		#print('select specific value Row '+str(row))
-	# print(valeur)
 	conn.close()
 	return valeur
 
