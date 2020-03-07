@@ -8,6 +8,8 @@ import smtplib
 from Recup_donnée_capteur import getTemp ,getHumidity , getPressure
 from Database import insertValue , selectValue,deleteValue , deleteTable , createTable , selectSpecificValue
 from templates_email import debut_email , end_email
+# Vous ne possedez pas le fichier login_email.py
+# Pour des raisons de securite
 from login_email import email,emailMDP, email_TO
 
 def sendEmail (text,type,etat):
