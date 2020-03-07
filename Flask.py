@@ -42,6 +42,10 @@ def graTemp (rep,date):
 
 @app.route("/")
 def home():
+	pressiontable = []
+	humiditetable = []
+	temperaturetable = []
+	horairetable = []
 	d= datetime.now()
 	y = d.strftime('%Y-%m-%d')
 	if getTemp() > 80: 
@@ -58,7 +62,7 @@ def home():
 		sendEmail('Pression Trop basse','Pression','basse')
 
 	# -------------------- Insertion de valeur ----------------------
-	# insertValue(str(getTemp()),str(getPressure()),str(getHumidity()))
+	# insertValue(str(getTemp()),str(getPressure()),str(getHumidity()))
 
 
 	# -------------------- Supprimer les valeurs --------------------
@@ -71,6 +75,11 @@ def home():
 	# createTable()
 
 	tableau = selectValue(False)
+	for row in tableau:
+		pressiontable.append(row[1]/10)
+		humiditetable.append(row[2])
+		temperaturetable.append(row[3])
+		horairetable.append(row[4])
 	return render_template(
 		"home.html",
 		title = "Supervision salle serveur",
@@ -78,7 +87,11 @@ def home():
 		humi = getHumidity(),
 		press = getPressure(),
 		value = tableau,
-		date = y
+		date = y,
+		pressiongraph = pressiontable,
+		humiditegraph = humiditetable,
+		temperaturegraph = temperaturetable, 
+		timegraph = horairetable
 		)
 
 
