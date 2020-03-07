@@ -1,11 +1,13 @@
-from Recup_donnée_capteur import getTemp ,getHumidity , getPressure
 from datetime import datetime, timedelta
-from Database import insertValue , selectValue,deleteValue , deleteTable , createTable , selectSpecificValue
 from email.mime.multipart import MIMEMultipart
 # Si erreur sur cette ligne la allez dans le terminale et tapez "pip install MIMEMultipart"
 from email.mime.text import MIMEText
-from templates_email import debut_email , end_email
 import smtplib
+
+# Include de mes fichiers avec mes def
+from Recup_donnée_capteur import getTemp ,getHumidity , getPressure
+from Database import insertValue , selectValue,deleteValue , deleteTable , createTable , selectSpecificValue
+from templates_email import debut_email , end_email
 from login_email import email,emailMDP, email_TO
 
 def sendEmail (text,type,etat):
