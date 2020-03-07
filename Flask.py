@@ -56,6 +56,7 @@ def home():
 		sendEmail('Pression Trop haute','Pression','haute')
 	elif getPressure() < 400 :
 		sendEmail('Pression Trop basse','Pression','basse')
+	
 	# -------------------- Insertion de valeur ----------------------
 	# insertValue(str(getTemp()),str(getPressure()),str(getHumidity()))
 
