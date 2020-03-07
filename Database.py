@@ -16,6 +16,7 @@ def insertValue(temp,press,humi):
 		print(e)
 	cur = conn.cursor()
 	req = 'INSERT INTO info (jour,horaire,temperature,pressure,humidite) VALUES (date("now"),time("now"),'+temp+','+press+','+humi+');'
+	print("New valeur inserez")
 	cur.execute(req)
 	conn.commit()
 	conn.close()

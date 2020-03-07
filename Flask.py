@@ -10,6 +10,7 @@ from envoie_mail import sendEmail
 
 app= Flask(__name__)
 
+
 @app.route("/gT/<rep>/<date>")
 def graTemp (rep,date):
 	d=datetime.now()
@@ -75,7 +76,7 @@ def home():
 	# createTable()
 
 	tableau = selectValue(False)
-	print("ATTENTION LA BASE DE DONNÉES ET EN HEURE D'été")
+	# print("ATTENTION LA BASE DE DONNÉES ET EN HEURE D'été")
 	for row in tableau:
 		pressiontable.append(row[1]/10)
 		humiditetable.append(row[2])
