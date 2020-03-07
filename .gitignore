@@ -2,4 +2,4 @@ login_email.py
 txt.txt
 supervision.db
 *.pyc
-__pycache__/
+
