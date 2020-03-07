@@ -75,6 +75,7 @@ def home():
 	# createTable()
 
 	tableau = selectValue(False)
+	print("ATTENTION LA BASE DE DONNÉES ET EN HEURE D'été")
 	for row in tableau:
 		pressiontable.append(row[1]/10)
 		humiditetable.append(row[2])
