@@ -8,7 +8,24 @@ from pprint import pprint
 from Database import insertValue , selectValue,deleteValue , deleteTable , createTable , selectSpecificValue
 from envoie_mail import sendEmail
 
+
+# MQTT Brokers https://projetsdiy.fr/mosquitto-broker-mqtt-raspberry-pi/ 
+
+
+# plus tard : https://freeboard.io
+# Plus tard : www.myconstellation.io
 app= Flask(__name__)
+
+# MQTT 
+
+# Ip ubuntu : 172.17.251.30
+
+# Ip Rasberry : 172.17.251.85
+
+
+# mosquitto_sub -h localhost -v -t test_channel
+
+# mosquitto_pub -h (address ip de ubuntu) -t test_channel -m "Hello Rasberry Pi"
 
 
 @app.route("/gT/<rep>/<date>")
@@ -49,10 +66,10 @@ def home():
 	horairetable = []
 	d= datetime.now()
 	y = d.strftime('%Y-%m-%d')
-	if getTemp() > 80: 
+	if getTemp() > 80:
 		sendEmail('Temperature Trop haute','temperature','haute')
 	elif getTemp() < 10 :
-	    sendEmail('Temperature Trop basse','temperature','basse')
+		sendEmail('Temperature Trop basse','temperature','basse')
 	if getHumidity() > 80: 
 		sendEmail('Humidité Trop haute','Humidité','haute')
 	elif  getHumidity() < 5 :
@@ -63,7 +80,7 @@ def home():
 		sendEmail('Pression Trop basse','Pression','basse')
 
 	# -------------------- Insertion de valeur ----------------------
-	# insertValue(str(getTemp()),str(getPressure()),str(getHumidity()))
+	# insertValue(str(getTemp()),str(getPressure()),str(getHumidity()))
 
 
 	# -------------------- Supprimer les valeurs --------------------
@@ -76,7 +93,7 @@ def home():
 	# createTable()
 
 	tableau = selectValue(False)
-	# print("ATTENTION LA BASE DE DONNÉES ET EN HEURE D'été")
+	# ATTENTION LA BASE DE DONNÉES ET EN HEURE D'été
 	for row in tableau:
 		pressiontable.append(row[1]/10)
 		humiditetable.append(row[2])
@@ -92,7 +109,7 @@ def home():
 		date = y,
 		pressiongraph = pressiontable,
 		humiditegraph = humiditetable,
-		temperaturegraph = temperaturetable, 
+		temperaturegraph = temperaturetable,
 		timegraph = horairetable
 		)
 
