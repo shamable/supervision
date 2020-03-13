@@ -8,6 +8,16 @@ from pprint import pprint
 from Database import insertValue , selectValue,deleteValue , deleteTable , createTable , selectSpecificValue
 from envoie_mail import sendEmail
 
+import paho.mqtt.client as mqtt # import the client1
+import time 
+
+broker_address="192.168.43.206"
+broker_port=1883
+#broker_address="iot.eclipse.org"  # use external broker
+client = mqtt.Client() # create new instance
+client.connect(broker_address)#,broker_port) # connect to broker
+client.subscribe("Test",qos=1)
+client.publish(topic = "house/main-light")#publis
 
 # MQTT Brokers https://projetsdiy.fr/mosquitto-broker-mqtt-raspberry-pi/ 
 
@@ -20,7 +30,7 @@ app= Flask(__name__)
 
 # Ip ubuntu : 172.17.251.30
 
-# Ip Rasberry : 172.17.251.85
+# Ip Rasberry : 172.17.251.85 / 192.168.43.206
 
 
 # mosquitto_sub -h localhost -v -t test_channel
