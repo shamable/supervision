@@ -5,38 +5,63 @@ from datetime import datetime, timedelta
 import socket
 import os
 from pprint import pprint
-from Database import insertValue , selectValue,deleteValue , deleteTable , createTable , selectSpecificValue
+from Database import insertValue , selectValue,deleteValue , deleteTable , createTable , selectSpecificValue , selectAllValue
 from envoie_mail import sendEmail
 
-import paho.mqtt.client as mqtt # import the client1
+import paho.mqtt.client as mqtt # install with pip3 install paho-mqtt
 import time 
-
-broker_address="192.168.43.206"
-broker_port=1883
-#broker_address="iot.eclipse.org"  # use external broker
-client = mqtt.Client() # create new instance
-client.connect(broker_address)#,broker_port) # connect to broker
-client.subscribe("Test",qos=1)
-client.publish(topic = "house/main-light")#publis
-
-# MQTT Brokers https://projetsdiy.fr/mosquitto-broker-mqtt-raspberry-pi/ 
-
 
 # plus tard : https://freeboard.io
 # Plus tard : www.myconstellation.io
+
 app= Flask(__name__)
 
 # MQTT 
 
-# Ip ubuntu : 172.17.251.30
-
-# Ip Rasberry : 172.17.251.85 / 192.168.43.206
-
-
 # mosquitto_sub -h localhost -v -t test_channel
+# si error connection 
+# mosquitto -d 
 
 # mosquitto_pub -h (address ip de ubuntu) -t test_channel -m "Hello Rasberry Pi"
 
+
+def on_message(client,userdata,msg):
+	if msg.payload.decode() == "Hello world!":
+		print("Yes!")
+		client.disconnect()
+	return
+
+def connect_mqtt():
+	client = mqtt.Client()
+	client.connect("192.168.1.57",1883,60)# Avoir l'adresse ip de l'autre machine 
+
+	client.subscribe("test")
+	client.publish("test","yolo")
+
+	return
+
+@app.route("/histo")
+def histo():
+	pressiontable = []
+	humiditetable = []
+	temperaturetable = []
+	horairetable = []
+	tableau = selectAllValue(False)
+	titre = "Historique des temperature"
+	for row in tableau:
+		pressiontable.append(row[1]/10)
+		humiditetable.append(row[2])
+		temperaturetable.append(row[3])
+		horairetable.append(row[4])
+	return render_template(
+		'histo.html',
+		titre = titre,
+		value = tableau,
+		pressiongraph = pressiontable,
+		humiditegraph = humiditetable,
+		temperaturegraph = temperaturetable,
+		timegraph = horairetable
+	)
 
 @app.route("/gT/<rep>/<date>")
 def graTemp (rep,date):
@@ -75,6 +100,7 @@ def home():
 	temperaturetable = []
 	horairetable = []
 	d= datetime.now()
+	connect_mqtt()
 	y = d.strftime('%Y-%m-%d')
 	if getTemp() > 80:
 		sendEmail('Temperature Trop haute','temperature','haute')
@@ -90,7 +116,7 @@ def home():
 		sendEmail('Pression Trop basse','Pression','basse')
 
 	# -------------------- Insertion de valeur ----------------------
-	# insertValue(str(getTemp()),str(getPressure()),str(getHumidity()))
+	# insertValue(str(getTemp()),str(getPressure()),str(getHumidity()))
 
 
 	# -------------------- Supprimer les valeurs --------------------
