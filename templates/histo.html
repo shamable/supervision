@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="utf-8">
+	<title>{{title}}</title>
+
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/main.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/bootstrap.min.css')}}">
+	<script type="text/javascript">
+		//var $ = "jquery";
+		$(document).ready(function($){
+			alert("Ready")
+			$('#tableinfo').DataTable();
+		});
+	</script>
+</head>
+<body><!--style="background-color: #3B3B3B"-->
+	<section class="container" style="background-color: rgba(200,200,200,0.5)">
+		<h4 align="center" style="margin-bottom:2%;color:#0000ff">{{ title }}</h4>
+	</section>
+
+	<div align="center">
+		<a style="margin: auto; margin-right: 5%;" href="/">home</a>
+	</div>
+	<section style="padding :2%;margin-top:2%;background-color: rgba(20,20,20,0.5)">
+		<table id="tableinfo" align="center" border="1" >
+			<tr align="center">
+				{#<td class="sorting_1">#</td>#}
+				<td class="sorting_1">Temprature</td>
+				<td class="sorting_1">Humidite</td>
+				<td class="sorting_1">Pression</td>
+				<td class="sorting_1">Horaire*</td>
+				<td class="sorting_1">Date</td>
+			</tr>
+			{% for row in value %}
+			<tr align="center">
+				{#<td class="sorting_1">{{row[0]}}</td>#}
+				<td class="sorting_1">{{row[3]}}</td>
+				<td class="sorting_1">{{row[2]}}</td>
+				<td class="sorting_1">{{row[1]}}</td>
+				<td class="sorting_1">{{row[4]}}</td>
+				<td class="sorting_1">{{row[5]}}</td>
+			</tr>
+			{%endfor%}
+		</table>
+		<br>
+		<p align="center">* Attention l'horaire afficher est a l'heure d'été</p>
+	</section>
+	<hr style="margin-bottom: 3%;margin-top: 3%">
+	<div>
+		<h2 style="margin-bottom: 3%;text-align: center;" >Graph avec toutes les valeurs des capteurs du : {{date}}</h2>
+		<div  id="curve_chart"></div>
+		<canvas class="centerGRAPH" align="center" id="myChart"></canvas>
+	</div>
+
+	<script src="{{url_for('static', filename='js/jquery-3.4.1.js')}}"></script>
+	<script src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
+	<script src="{{url_for('static', filename='js/datatables.js')}}"></script>
+
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type="text/javascript">
+		let ctx = document.getElementById('myChart').getContext('2d');
+		let chart = new Chart(ctx,{
+			type : 'line',
+
+
+			data: {
+            labels:{{timegraph|tojson}},//
+            
+            datasets : [{
+            	label:'Pression (/10)',
+            	borderColor:'rgb(0, 255,0)',
+            	data:{{pressiongraph}}
+            },{
+            	label:'Humidité',
+            	borderColor:'rgb(0,0,255)',
+            	data:{{humiditegraph}}
+            },{
+            	label:'Temperature',
+            	borderColor:'rgb(255,0,0)',
+            	data:{{temperaturegraph}}
+            }]
+            
+        },
+
+        options :{}
+    })
+</script>
+</body>
+</html>
