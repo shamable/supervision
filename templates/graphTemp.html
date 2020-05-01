@@ -6,6 +6,7 @@
     <link rel = "icon" type = "image/png" href = "http://espace-raspberry-francais.fr/ImgStat/Icon.png" />
     <title>Graph du : {{ d }}</title>
     <link href="http://visjs.org/dist/vis.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/main.css')}}">
 </head>
 
 <body>
@@ -14,7 +15,9 @@
     <br>
     <a style="margin: auto; margin-right: 5%;" href="/">Home</a>
     <div class="" id="curve_chart"></div>
-    <canvas id="myChart"></canvas>
+    <div class="centerGRAPH">
+        <canvas id="myChart"></canvas>
+    </div>
     <table width=100%>
         <tr>
             <th align=left><a href='/gT/{{rep}}/{{ prevDate }}'><img class="fleches" src='/static/prevDay.png'></a></th>
@@ -33,9 +36,8 @@
             labels:{{time|tojson}},//
             
             datasets : [{
-                label:'My First dataset',
-                backgroundColor:'rgb(255, 99,132)',
-                borderColor:'rgb(255,99,132)',
+                label:'{{rep}}',
+                borderColor:'{{color}}',
                 data:{{value}}// {##}
             }]
         },

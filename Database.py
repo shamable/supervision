@@ -15,6 +15,7 @@ def insertValue(temp,press,humi):
 	except Error as e:
 		print(e)
 	cur = conn.cursor()
+	# Probleme avec SQL sur l'horaire 
 	req = 'INSERT INTO info (jour,horaire,temperature,pressure,humidite) VALUES (date("now"),time("now"),'+temp+','+press+','+humi+');'
 	print("New valeur inserez")
 	cur.execute(req)

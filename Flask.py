@@ -7,6 +7,7 @@ import os
 from pprint import pprint
 from Database import insertValue , selectValue,deleteValue , deleteTable , createTable , selectSpecificValue , selectAllValue
 from envoie_mail import sendEmail
+import json
 
 import paho.mqtt.client as mqtt # install with pip3 install paho-mqtt
 import time 
@@ -16,28 +17,24 @@ import time
 
 app= Flask(__name__)
 
-# MQTT 
 
-# mosquitto_sub -h localhost -v -t test_channel
-# si error connection 
-# mosquitto -d 
+def connect_mqtt(temp,humi,press):
+	d=datetime.now()
+	channel = "test_channel"
 
-# mosquitto_pub -h (address ip de ubuntu) -t test_channel -m "Hello Rasberry Pi"
-
-
-def on_message(client,userdata,msg):
-	if msg.payload.decode() == "Hello world!":
-		print("Yes!")
-		client.disconnect()
-	return
-
-def connect_mqtt():
+	data_send={"Temperature": temp ,"Humidity" : humi ,"Pressure" : press}
 	client = mqtt.Client()
-	client.connect("192.168.1.57",1883,60)# Avoir l'adresse ip de l'autre machine 
 
-	client.subscribe("test")
-	client.publish("test","yolo")
+	client.loop_start()
+	client.connect("192.168.1.27",1883,60)# Avoir l'adresse ip de l'autre machine 
+	if client:
+	#while True : 
+		client.subscribe(channel)
+		client.publish(channel,json.dumps(data_send),1)
+		print("MQTT send : " +str(data_send))
 
+	client.loop_stop()
+	client.disconnect()
 	return
 
 @app.route("/histo")
@@ -70,10 +67,16 @@ def graTemp (rep,date):
 	allTime = []
 	if rep == "temp":
 		valeur = selectSpecificValue('temperature',date)
-	elif rep == "humi":
+		rep = "Temperature"
+		color = 'rgb(255,0,0)'
+	elif rep == "hum":
 		valeur = selectSpecificValue('pressure',date)
-	elif rep == "press":
+		rep = "Humidite"
+		color = 'rgb(0,0,255)'
+	elif rep == "pres":
 		valeur = selectSpecificValue('humidite',date)
+		rep = "Pression"
+		color = 'rgb(0, 255,0)'
 	annee=str(d)[:4]
 	titre =" Temperature actuelle : "+ str(getTemp())+ " °C"
 	for row in valeur:
@@ -84,6 +87,7 @@ def graTemp (rep,date):
 	return render_template(
 		'graphTemp.html',
 		d = d.strftime("%d-%m-%Y"),
+		color = color,
 		rep = rep,
 		titre = titre,
 		temp = getTemp(),
@@ -100,32 +104,40 @@ def home():
 	temperaturetable = []
 	horairetable = []
 	d= datetime.now()
-	connect_mqtt()
 	y = d.strftime('%Y-%m-%d')
 	if getTemp() > 80:
 		sendEmail('Temperature Trop haute','temperature','haute')
 	elif getTemp() < 10 :
+
 		sendEmail('Temperature Trop basse','temperature','basse')
 	if getHumidity() > 80: 
+
 		sendEmail('Humidité Trop haute','Humidité','haute')
 	elif  getHumidity() < 5 :
+
 		sendEmail('Humidité Trop basse','Humidité','basse')
 	if getPressure() > 1114 :
+
 		sendEmail('Pression Trop haute','Pression','haute')
 	elif getPressure() < 400 :
+
 		sendEmail('Pression Trop basse','Pression','basse')
 
 	# -------------------- Insertion de valeur ----------------------
-	# insertValue(str(getTemp()),str(getPressure()),str(getHumidity()))
 
+	insertValue(str(getTemp()),str(getPressure()),str(getHumidity()))
+	connect_mqtt(getTemp(),getHumidity(),getPressure())
 
-	# -------------------- Supprimer les valeurs --------------------
+	# -------------------- Supprimer les valeurs ---------------------
+
 	# deleteValue()
 
 	# -------------------- Supprimer la table info --------------------
+
 	# deleteTable()
 
-	# -------------------- Creation de la table info --------------------
+	# -------------------- Creation de la table info ------------------
+
 	# createTable()
 
 	tableau = selectValue(False)
@@ -148,7 +160,6 @@ def home():
 		temperaturegraph = temperaturetable,
 		timegraph = horairetable
 		)
-
 
 if __name__ =="__main__":
 	app.run(debug=True,host=adresseIP(),port='5000')
