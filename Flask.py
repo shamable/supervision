@@ -6,7 +6,7 @@ import socket
 import os
 from pprint import pprint
 from Database import insertValue , selectValue,deleteValue , deleteTable , createTable , selectSpecificValue , selectAllValue
-from Database_gestion import SelectALlMail,CreateTableEmail,deleteTableEmail , SelectSeuilValue , CreateTableValue, deleteTableValue, InsertTableEmail,selectspecificMail
+from Database_gestion import SelectALlMail,CreateTableEmail,deleteTableEmail , SelectSeuilValue , CreateTableValue, deleteTableValue, InsertTableEmail,selectspecificMail,deleteOneEmail
 from envoie_mail import sendEmail
 from mqtt import connect_mqtt
 
@@ -40,6 +40,12 @@ def histo():
 		temperaturegraph = temperaturetable,
 		timegraph = horairetable
 	)
+
+@app.route("/deleteEmail/<idmail>")
+def deleteEmail(idmail):
+	deleteOneEmail(idmail)
+	return redirect("/mail")
+
 
 @app.route("/gT/<rep>/<date>")
 def graTemp (rep,date):
@@ -77,7 +83,6 @@ def graTemp (rep,date):
 		prevDate = ndate.strftime("%Y-%m-%d"),
 		nextDate = pdate.strftime("%Y-%m-%d")
 	)
-
 
 @app.route("/register")
 def register():
@@ -119,6 +124,14 @@ def connect():
 				return redirect("/")
 	# Faire en sorte que l'utilisateur sache que son MDP ou son email est faux 
 	return redirect("/register")
+
+@app.route("/mail")
+def mail():
+	titre = 'Email'
+	res = SelectALlMail()
+	return render_template("mail.html",
+		title = titre,
+		mail = res)
 
 
 @app.route("/")

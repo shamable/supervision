@@ -16,28 +16,25 @@
 </head>
 <body><!--style="background-color: #3B3B3B"-->
 	<section class="container" style="background-color: rgba(200,200,200,0.5)">
-		<h2 align="center">Enregistrez-vous</h2>
 		<a style="margin: auto;" href="/">Home</a>
 		<div>
-			<form style="margin-top: 6%" action="/send" method="post">
-				<h3>S'inscrire</h3>
-				<div class="form-group">
-					<input type="email" name="email" id="email" placeholder="Entrez votre adresse mail">
-					<input type="password" name="mdp" id="mdp" placeholder="Entrez Votre mot de passe">
-					<input type="hidden" name="role" id="role" value="T">
-				</div>
-				<input class="btn btn-primary" type="submit" value="Envoyer">
-			</form>
-		</div>
-		<div>
-			<form style="margin-top: 6%" action="/connect" method="post">
-				<h3>Se connecter</h3>
-				<div class="form-group">
-					<input type="email" name="email" id="email" placeholder="Entrez votre adresse mail">
-					<input type="password" name="mdp" id="mdp" placeholder="Entrez Votre mot de passe">
-				</div>
-				<input class="btn btn-primary" type="submit" value="Envoyer">
-			</form>
+			<table align="center" border="1" >
+			<tr align="center">
+				<td class="sorting_1">#</td>
+				<td class="sorting_1">Mail</td>
+				{# Ne mettre sa que pour les admins #}
+				<td class="sorting_1">Mot de passe</td>
+				<td class="sorting_1">Supprimer</td>
+			</tr>
+			{% for row in mail %}
+			<tr align="center">
+				<td class="sorting_1">{{row[0]}}</td>
+				<td class="sorting_1">{{row[1]}}</td>
+				<td class="sorting_1">{{row[2]}}</td>
+				<td class="sorting_1"><a href="/deleteEmail/{{row[0]}}">Supprimer</a></td>
+			</tr>
+			{%endfor%}
+		</table>
 		</div>
 	</section>
 	

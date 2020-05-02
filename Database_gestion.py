@@ -3,6 +3,7 @@ import sqlite3
 # Definition permettant de recuperer les adresse mails en tant que admin pour pouvoir les supprimer au besoin
 def SelectALlMail():
 	conn = None
+	valeur =[]
 	try :
 		conn = sqlite3.connect('ImportanteValue.db')
 	except Error as e:
@@ -10,10 +11,12 @@ def SelectALlMail():
 	cur = conn.cursor()
 	req = 'SELECT * FROM infoemail'
 	# print("New valeur inserez")
-	cur.execute(req)
+	result = cur.execute(req)
+	for row in result:
+		valeur.append(row)
 	conn.commit()
 	conn.close()
-	return
+	return valeur
 
 
 def selectspecificMail(email):
@@ -40,7 +43,6 @@ def InsertTableEmail(email,password):
 		print(e)
 	cur = conn.cursor()
 	req = 'INSERT INTO infoemail (email,password) VALUES ("'+email+'","'+password+'");'
-	print('INSERT INTO infoemail (email,password) VALUES ("'+email+'","'+password+'");')
 	print("New valeur inserez in ImportanteValue in Table Email")
 	print("--------------------------------------------")
 	print("email : "+email +" password : "+password)
@@ -59,7 +61,23 @@ def CreateTableEmail():
 	req = '''CREATE TABLE infoemail (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     email varchar,
-    password varchar);'''
+    password varchar,
+    role varchar);'''
+	# print("New valeur inserez")
+	cur.execute(req)
+	conn.commit()
+	conn.close()
+	return
+
+def deleteOneEmail(idMail):
+	conn = None
+	try :
+		conn = sqlite3.connect('ImportanteValue.db')
+	except Error as e:
+		print(e)
+	cur = conn.cursor()
+	### Delete que un mail cree la requete !!!
+	req = 'DELETE FROM infoemail where  id = "'+idMail+'" ; '
 	# print("New valeur inserez")
 	cur.execute(req)
 	conn.commit()
