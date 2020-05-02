@@ -1,13 +1,5 @@
 import sqlite3
 
-"""
-conn = sqlite3.connect('supervision.db')
-cur = conn.cursor()
-req = "select Pression, Humidite, Temperature from Infos"
-result = cur.execute(req)
-for row in result:
-	print(type(row))
-"""
 def insertValue(temp,press,humi):
 	conn = None
 	try :

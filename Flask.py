@@ -1,15 +1,15 @@
 from Recup_donnée_capteur import getTemp ,getHumidity , getPressure
 from Adresseip import adresseIP
-from flask import Flask ,render_template
+from flask import Flask ,render_template, request , redirect
 from datetime import datetime, timedelta
 import socket
 import os
 from pprint import pprint
 from Database import insertValue , selectValue,deleteValue , deleteTable , createTable , selectSpecificValue , selectAllValue
+from Database_gestion import SelectALlMail,CreateTableEmail,deleteTableEmail , SelectSeuilValue , CreateTableValue, deleteTableValue, InsertTableEmail,selectspecificMail
 from envoie_mail import sendEmail
-import json
+from mqtt import connect_mqtt
 
-import paho.mqtt.client as mqtt # install with pip3 install paho-mqtt
 import time 
 
 # plus tard : https://freeboard.io
@@ -17,25 +17,6 @@ import time
 
 app= Flask(__name__)
 
-
-def connect_mqtt(temp,humi,press):
-	d=datetime.now()
-	channel = "test_channel"
-
-	data_send={"Temperature": temp ,"Humidity" : humi ,"Pressure" : press}
-	client = mqtt.Client()
-
-	client.loop_start()
-	client.connect("192.168.1.27",1883,60)# Avoir l'adresse ip de l'autre machine 
-	if client:
-	#while True : 
-		client.subscribe(channel)
-		client.publish(channel,json.dumps(data_send),1)
-		print("MQTT send : " +str(data_send))
-
-	client.loop_stop()
-	client.disconnect()
-	return
 
 @app.route("/histo")
 def histo():
@@ -97,6 +78,49 @@ def graTemp (rep,date):
 		nextDate = pdate.strftime("%Y-%m-%d")
 	)
 
+
+@app.route("/register")
+def register():
+	titre = "Enregistrez-vous"
+	return render_template('register.html',
+		title = titre)
+
+@app.route("/send",methods=['GET','POST'])
+def send():
+	if request.method == 'POST' :
+		# Cree l'alerte si une adresse email exsite déja
+		email = request.form['email']
+		mdp = request.form['mdp']
+
+		# CreateTableEmail()
+
+		# deleteTableEmail()
+		print("Email : "+email+"    Mdp : "+mdp)
+		result = selectspecificMail(email)
+		for row in result :
+			if email == row[0] :
+				# Dire a l'utilisateur que le mail exsite est déja utiliser
+				return redirect("/register")
+				
+
+		InsertTableEmail(email,mdp)
+		return redirect("/")
+	return redirect("/register")
+
+@app.route("/connect",methods=['GET','POST'])
+def connect():
+	if request.method == 'POST' :
+		email = request.form['email']
+		mdp = request.form['mdp']
+
+		result = selectspecificMail(email)
+		for row in result :
+			if email == row[0] and mdp == row[1]:
+				return redirect("/")
+	# Faire en sorte que l'utilisateur sache que son MDP ou son email est faux 
+	return redirect("/register")
+
+
 @app.route("/")
 def home():
 	pressiontable = []
@@ -125,8 +149,8 @@ def home():
 
 	# -------------------- Insertion de valeur ----------------------
 
-	insertValue(str(getTemp()),str(getPressure()),str(getHumidity()))
-	connect_mqtt(getTemp(),getHumidity(),getPressure())
+	# insertValue(str(getTemp()),str(getPressure()),str(getHumidity()))
+	# connect_mqtt(getTemp(),getHumidity(),getPressure())
 
 	# -------------------- Supprimer les valeurs ---------------------
 
@@ -141,7 +165,7 @@ def home():
 	# createTable()
 
 	tableau = selectValue(False)
-	# ATTENTION LA BASE DE DONNÉES ET EN HEURE D'été
+	# ATTENTION LAVEC L'HORAIRE DE LA BDD h-2(en été) h-1(hiver)  
 	for row in tableau:
 		pressiontable.append(row[1]/10)
 		humiditetable.append(row[2])
