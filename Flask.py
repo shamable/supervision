@@ -8,7 +8,6 @@ from pprint import pprint
 from Database import insertValue , selectValue,deleteValue , deleteTable , createTable , selectSpecificValue , selectAllValue
 from Database_gestion import SelectALlMail,CreateTableEmail,deleteTableEmail , SelectSeuilValue , CreateTableValue, deleteTableValue, InsertTableEmail,selectspecificMail,deleteOneEmail
 from envoie_mail import sendEmail
-from mqtt import connect_mqtt
 
 import time 
 
@@ -16,7 +15,6 @@ import time
 # Plus tard : www.myconstellation.io
 
 app= Flask(__name__)
-
 
 @app.route("/histo")
 def histo():
@@ -99,12 +97,12 @@ def send():
 		role = request.form['role']
 		# CreateTableEmail()
 
-		# deleteTableEmail()
+		#deleteTableEmail()
 		print("Email : "+email+"    Mdp : "+mdp+ "   role : "+role)
 		result = selectspecificMail(email)
 		for row in result :
 			if email == row[0] :
-				# Dire a l'utilisateur que le mail exsite est déja utiliser
+				flash("Cette email existe déja")
 				return redirect("/register")
 				
 
@@ -138,7 +136,7 @@ def connect():
 					session ['admin']= True
 				return redirect("/")
 			else : 
-				flash('Email ou mot de passe Incorect')
+				error='Email ou mot de passe Incorect'
 	# Faire en sorte que l'utilisateur sache que son MDP ou son email est faux 
 	return redirect("/register")
 
@@ -176,22 +174,10 @@ def home():
 	elif getPressure() < 400 :
 
 		sendEmail('Pression Trop basse','Pression','basse')
-	# -------------------- Insertion de valeur ----------------------
 
 	# insertValue(str(getTemp()),str(getPressure()),str(getHumidity()))
-	# connect_mqtt(getTemp(),getHumidity(),getPressure())
+	
 
-	# -------------------- Supprimer les valeurs ---------------------
-
-	# deleteValue()
-
-	# -------------------- Supprimer la table info --------------------
-
-	# deleteTable()
-
-	# -------------------- Creation de la table info ------------------
-
-	# createTable()
 
 	tableau = selectValue(False)
 	# ATTENTION LAVEC L'HORAIRE DE LA BDD h-2(en été) h-1(hiver)  
