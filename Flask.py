@@ -1,6 +1,6 @@
 from Recup_donnée_capteur import getTemp ,getHumidity , getPressure
 from Adresseip import adresseIP
-from flask import Flask ,render_template, request , redirect
+from flask import Flask, flash ,render_template, request , redirect , session
 from datetime import datetime, timedelta
 import socket
 import os
@@ -90,17 +90,17 @@ def register():
 	return render_template('register.html',
 		title = titre)
 
-@app.route("/send",methods=['GET','POST'])
+@app.route("/send",methods=['POST'])
 def send():
 	if request.method == 'POST' :
 		# Cree l'alerte si une adresse email exsite déja
 		email = request.form['email']
 		mdp = request.form['mdp']
-
+		role = request.form['role']
 		# CreateTableEmail()
 
 		# deleteTableEmail()
-		print("Email : "+email+"    Mdp : "+mdp)
+		print("Email : "+email+"    Mdp : "+mdp+ "   role : "+role)
 		result = selectspecificMail(email)
 		for row in result :
 			if email == row[0] :
@@ -108,9 +108,20 @@ def send():
 				return redirect("/register")
 				
 
-		InsertTableEmail(email,mdp)
-		return redirect("/")
+		InsertTableEmail(email,mdp ,role)
+		flash('Connectez-Vous')
 	return redirect("/register")
+
+@app.route("/disconnect",methods=['GET','POST'])
+def disconnect():
+	session.clear()
+	print(session)
+	return redirect("/redirection")
+
+@app.route("/redirection")
+def redirection():
+	print("redirection")
+	return redirect("/")
 
 @app.route("/connect",methods=['GET','POST'])
 def connect():
@@ -119,9 +130,15 @@ def connect():
 		mdp = request.form['mdp']
 
 		result = selectspecificMail(email)
+		resultRole = selectspecificMail(email)
 		for row in result :
 			if email == row[0] and mdp == row[1]:
+				session['logged_in'] = True
+				if resultRole[0][2] == 'A':
+					session ['admin']= True
 				return redirect("/")
+			else : 
+				flash('Email ou mot de passe Incorect')
 	# Faire en sorte que l'utilisateur sache que son MDP ou son email est faux 
 	return redirect("/register")
 
@@ -159,7 +176,6 @@ def home():
 	elif getPressure() < 400 :
 
 		sendEmail('Pression Trop basse','Pression','basse')
-
 	# -------------------- Insertion de valeur ----------------------
 
 	# insertValue(str(getTemp()),str(getPressure()),str(getHumidity()))
@@ -195,8 +211,10 @@ def home():
 		pressiongraph = pressiontable,
 		humiditegraph = humiditetable,
 		temperaturegraph = temperaturetable,
-		timegraph = horairetable
+		timegraph = horairetable,
+		session = session
 		)
 
 if __name__ =="__main__":
+	app.secret_key = os.urandom(12)
 	app.run(debug=True,host=adresseIP(),port='5000')

@@ -27,7 +27,7 @@ def selectspecificMail(email):
 	except Error as e:
 		print(e)
 	cur = conn.cursor()
-	req = 'SELECT email ,password FROM infoemail WHERE email ="'+email+'"'
+	req = 'SELECT email ,password,role FROM infoemail WHERE email ="'+email+'"'
 	result = cur.execute(req)
 	for row in result:
 		valeur.append(row)
@@ -35,17 +35,16 @@ def selectspecificMail(email):
 	conn.close()
 	return valeur 
 
-def InsertTableEmail(email,password):
+def InsertTableEmail(email,password, role):
 	conn = None
 	try :
 		conn = sqlite3.connect('ImportanteValue.db')
 	except Error as e:
 		print(e)
 	cur = conn.cursor()
-	req = 'INSERT INTO infoemail (email,password) VALUES ("'+email+'","'+password+'");'
+	req = 'INSERT INTO infoemail (email,password,role) VALUES ("'+email+'","'+password+'","'+role+'");'
 	print("New valeur inserez in ImportanteValue in Table Email")
-	print("--------------------------------------------")
-	print("email : "+email +" password : "+password)
+	print('INSERT INTO infoemail (email,password,role) VALUES ("'+email+'","'+password+'","'+role+'");')
 	cur.execute(req)
 	conn.commit()
 	conn.close()
@@ -125,6 +124,7 @@ def CreateTableValue():
 	except Error as e:
 		print(e)
 	cur = conn.cursor()
+	# Cree nouvelle colonne pour ajouter si ses MIN OU MAX 
 	req = '''CREATE TABLE seuilValue (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     value int,
