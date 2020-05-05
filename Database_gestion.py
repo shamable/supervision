@@ -44,7 +44,6 @@ def InsertTableEmail(email,password, role):
 	cur = conn.cursor()
 	req = 'INSERT INTO infoemail (email,password,role) VALUES ("'+email+'","'+password+'","'+role+'");'
 	print("New valeur inserez in ImportanteValue in Table Email")
-	print('INSERT INTO infoemail (email,password,role) VALUES ("'+email+'","'+password+'","'+role+'");')
 	cur.execute(req)
 	conn.commit()
 	conn.close()
@@ -101,6 +100,7 @@ def deleteTableEmail():
 # ----------------------------------------------------------------------------------------
 # Requete pour la table Seuil 
 def SelectSeuilValue():
+	valeur = []
 	conn = None
 	try :
 		conn = sqlite3.connect('ImportanteValue.db')
@@ -108,11 +108,12 @@ def SelectSeuilValue():
 		print(e)
 	cur = conn.cursor()
 	req = 'SELECT * FROM seuilValue'
-
-	cur.execute(req)
+	result = cur.execute(req)
+	for row in result:
+		valeur.append(row)
 	conn.commit()
 	conn.close()
-	return
+	return valeur
 
 # Creer la def pour l'instertion de valeur et ensutie la modification 
 
@@ -127,8 +128,24 @@ def CreateTableValue():
 	# Cree nouvelle colonne pour ajouter si ses MIN OU MAX 
 	req = '''CREATE TABLE seuilValue (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    value int,
-    type text);'''
+    value varchar,
+    etat varchar,
+    type varchar);'''
+	# print("New valeur inserez")
+	cur.execute(req)
+	conn.commit()
+	conn.close()
+	return
+
+def insertTableValue(value,type,etat):
+	conn = None
+	try :
+		conn = sqlite3.connect('ImportanteValue.db')
+	except Error as e:
+		print(e)
+	cur = conn.cursor()
+	# Cree nouvelle colonne pour ajouter si ses MIN OU MAX 
+	req = 'INSERT INTO seuilValue (value,type,etat) VALUES ("'+str(value)+'","'+type+'","'+etat+'");'
 	# print("New valeur inserez")
 	cur.execute(req)
 	conn.commit()

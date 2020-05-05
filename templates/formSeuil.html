@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="utf-8">
+	<title>{{title}}</title>
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/datatables.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/main.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/bootstrap.min.css')}}">
+	<link rel="stylesheet" href="{{url_for('static', filename='css/datable_css/dataTables.bootstrap.css')}}" type="text/css">
+	<link rel="stylesheet" href="{{url_for('static', filename='css/datable_css/dataTables.bootstrap4.css')}}" type="text/css">
+	<link rel="stylesheet" href="{{url_for('static', filename='css/datable_css/dataTables.foundation.css')}}" type="text/css">
+	<link rel="stylesheet" href="{{url_for('static', filename='css/datable_css/dataTables.jqueryui.css')}}" type="text/css">
+	<link rel="stylesheet" href="{{url_for('static', filename='css/datable_css/dataTables.semanticui.css')}}" type="text/css">
+	<link rel="stylesheet" href="{{url_for('static', filename='css/datable_css/jquery.dataTables.css')}}" type="text/css">
+</head>
+<body>
+	<section class="container" style="background-color: rgba(200,200,200,0.5)">
+		<a style="margin: auto;" href="/">Home</a>
+		<div>
+			<div>
+			<form style="margin-top: 6%" action="" method="post">
+				<h3></h3>
+				<div class="form-group">
+					<input type="email" name="email" id="email" placeholder="">
+				</div>
+				<input class="btn btn-primary" type="submit" value="Envoyer">
+			</form>
+		</div>
+		</div>
+	</section>
+	
+	<script src="{{url_for('static', filename='js/jquery-3.4.1.js')}}"></script>
+	<script src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
+	<script src="{{url_for('static', filename='js/datatables.js')}}"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+</body>
+</html>

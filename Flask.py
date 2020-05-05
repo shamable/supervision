@@ -6,7 +6,7 @@ import socket
 import os
 from pprint import pprint
 from Database import insertValue , selectValue,deleteValue , deleteTable , createTable , selectSpecificValue , selectAllValue
-from Database_gestion import SelectALlMail,CreateTableEmail,deleteTableEmail , SelectSeuilValue , CreateTableValue, deleteTableValue, InsertTableEmail,selectspecificMail,deleteOneEmail
+from Database_gestion import SelectALlMail,CreateTableEmail,deleteTableEmail , SelectSeuilValue , CreateTableValue, deleteTableValue, InsertTableEmail,selectspecificMail,deleteOneEmail,insertTableValue
 from envoie_mail import sendEmail
 
 import time 
@@ -15,6 +15,7 @@ import time
 # Plus tard : www.myconstellation.io
 
 app= Flask(__name__)
+
 
 @app.route("/histo")
 def histo():
@@ -118,8 +119,17 @@ def disconnect():
 
 @app.route("/redirection")
 def redirection():
-	print("redirection")
 	return redirect("/")
+
+@app.route("/formSeuil")
+def formSeuil():
+	titre = "Valeur de Seuil"
+	valeur = SelectSeuilValue()
+	print(valeur)
+	return render_template("formSeuil.html",
+	title = titre)
+
+
 
 @app.route("/connect",methods=['GET','POST'])
 def connect():
@@ -128,11 +138,10 @@ def connect():
 		mdp = request.form['mdp']
 
 		result = selectspecificMail(email)
-		resultRole = selectspecificMail(email)
 		for row in result :
 			if email == row[0] and mdp == row[1]:
 				session['logged_in'] = True
-				if resultRole[0][2] == 'A':
+				if row[2] == 'A':
 					session ['admin']= True
 				return redirect("/")
 			else : 
@@ -175,9 +184,7 @@ def home():
 
 		sendEmail('Pression Trop basse','Pression','basse')
 
-	# insertValue(str(getTemp()),str(getPressure()),str(getHumidity()))
-	
-
+	# insertValue(str(getTemp()),str(getPressure()),str(getHumidity()))
 
 	tableau = selectValue(False)
 	# ATTENTION LAVEC L'HORAIRE DE LA BDD h-2(en été) h-1(hiver)  
