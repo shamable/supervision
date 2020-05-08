@@ -194,25 +194,23 @@ def home():
 	horairetable = []
 	valeur = SelectSeuilValue()
 	for row in valeur :
-		if row[0] < 3 :
-			if valmin == 0 : 
-				valmin = row[1]
-			if int(getTemp()) < int(valmin) :
+		print(row)
+		if row[0] == 1 :
+			if int(getTemp()) < int(row[1]) :
 				sendEmail('Temperature Trop basse','temperature','basse')
+		if row[0] == 2 : 
 			if int(getTemp()) > int(row[1]) :
 				sendEmail('Temperature Trop haute','temperature','haute')
-		if row[0]>2 and row[0]<5 :
-			if valminpress == 0 : 
-				valminpress = row[1]
-			if int(getPressure()) < float(valmin) :
+		if row[0] == 3 :
+			if int(getPressure()) < float(row[1]) :
 				sendEmail('Pression Trop basse','Pression','basse')
+		if row[0] == 4 : 
 			if int(getPressure()) > float(row[1]) :
 				sendEmail('Pression Trop haute','Pression','haute')
-		if row[0]>4 :
-			if valminhumi == 0 : 
-				valminhumi = row[1]
-			if int(getHumidity()) < int(valmin) :
+		if row[0] == 5 :
+			if int(getHumidity()) < int(row[1]) :
 				sendEmail('Humidité Trop basse','Humidité','basse')
+		if row[0] == 6 : 
 			if int(getHumidity()) > int(row[1]) :
 				sendEmail('Humidité Trop haute','Humidité','haute')
 	d= datetime.now()

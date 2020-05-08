@@ -52,6 +52,6 @@ def sendEmail (text,type,etat):
 	for row in valeur :
 		to = row[1]
 		mailserver.sendmail(msg['From'], to, msg.as_string())
-		print('Envoie de mail à '+to+' '+str(type))
+		print('Envoie de mail à '+to+' '+str(type)+" "+str(etat))
 	mailserver.quit()
 	return
