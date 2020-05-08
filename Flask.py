@@ -6,7 +6,7 @@ import socket
 import os
 from pprint import pprint
 from Database import insertValue , selectValue,deleteValue , deleteTable , createTable , selectSpecificValue , selectAllValue
-from Database_gestion import SelectALlMail,CreateTableEmail,deleteTableEmail , SelectSeuilValue , CreateTableValue, deleteTableValue, InsertTableEmail,selectspecificMail,deleteOneEmail,insertTableValue
+from Database_gestion import SelectALlMail,CreateTableEmail,deleteTableEmail , SelectSeuilValue , CreateTableValue, deleteTableValue, InsertTableEmail,selectspecificMail,deleteOneEmail,insertTableValue ,updateTableValue
 from envoie_mail import sendEmail
 
 import time 
@@ -39,6 +39,23 @@ def histo():
 		temperaturegraph = temperaturetable,
 		timegraph = horairetable
 	)
+
+@app.route("/modifseuil",methods=['POST'])
+def modifseuil():
+	mintemp = request.form['1']
+	maxtemp = request.form['2']
+	minpres = request.form['3']
+	maxpres = request.form['4']
+	minhumi = request.form['5']
+	maxhumi = request.form['6']
+	updateTableValue(mintemp,'1')
+	updateTableValue(maxtemp,'2')
+	updateTableValue(minpres,'3')
+	updateTableValue(maxpres,'4')
+	updateTableValue(minhumi,'5')
+	updateTableValue(maxhumi,'6')
+	return redirect("/formSeuil",code = 302)
+
 
 @app.route("/deleteEmail/<idmail>")
 def deleteEmail(idmail):
@@ -99,7 +116,6 @@ def send():
 		# CreateTableEmail()
 
 		#deleteTableEmail()
-		print("Email : "+email+"    Mdp : "+mdp+ "   role : "+role)
 		result = selectspecificMail(email)
 		for row in result :
 			if email == row[0] :
@@ -114,7 +130,6 @@ def send():
 @app.route("/disconnect",methods=['GET','POST'])
 def disconnect():
 	session.clear()
-	print(session)
 	return redirect("/redirection")
 
 @app.route("/redirection")
@@ -123,15 +138,25 @@ def redirection():
 
 @app.route("/formSeuil")
 def formSeuil():
+	temperature = []
+	humidite = []
+	pression = []
 	titre = "Valeur de Seuil"
 	valeur = SelectSeuilValue()
-	print(valeur)
+	for row in valeur:
+		if row[3] == 'temperature':
+			temperature.append(row[1])
+		elif row[3] == 'humidite':
+			humidite.append(row[1])
+		elif row[3] == 'pression':
+			pression.append(row[1])
 	return render_template("formSeuil.html",
-	title = titre)
+	title = titre,
+	value = valeur)
 
 
 
-@app.route("/connect",methods=['GET','POST'])
+@app.route("/connect",methods=['POST'])
 def connect():
 	if request.method == 'POST' :
 		email = request.form['email']
@@ -160,30 +185,38 @@ def mail():
 
 @app.route("/")
 def home():
+	valmin = 0
+	valminpress = 0
+	valminhumi = 0
 	pressiontable = []
 	humiditetable = []
 	temperaturetable = []
 	horairetable = []
+	valeur = SelectSeuilValue()
+	for row in valeur :
+		if row[0] < 3 :
+			if valmin == 0 : 
+				valmin = row[1]
+			if int(getTemp()) < int(valmin) :
+				sendEmail('Temperature Trop basse','temperature','basse')
+			if int(getTemp()) > int(row[1]) :
+				sendEmail('Temperature Trop haute','temperature','haute')
+		if row[0]>2 and row[0]<5 :
+			if valminpress == 0 : 
+				valminpress = row[1]
+			if int(getPressure()) < float(valmin) :
+				sendEmail('Pression Trop basse','Pression','basse')
+			if int(getPressure()) > float(row[1]) :
+				sendEmail('Pression Trop haute','Pression','haute')
+		if row[0]>4 :
+			if valminhumi == 0 : 
+				valminhumi = row[1]
+			if int(getHumidity()) < int(valmin) :
+				sendEmail('Humidité Trop basse','Humidité','basse')
+			if int(getHumidity()) > int(row[1]) :
+				sendEmail('Humidité Trop haute','Humidité','haute')
 	d= datetime.now()
 	y = d.strftime('%Y-%m-%d')
-	if getTemp() > 80:
-		sendEmail('Temperature Trop haute','temperature','haute')
-	elif getTemp() < 10 :
-
-		sendEmail('Temperature Trop basse','temperature','basse')
-	if getHumidity() > 80: 
-
-		sendEmail('Humidité Trop haute','Humidité','haute')
-	elif  getHumidity() < 5 :
-
-		sendEmail('Humidité Trop basse','Humidité','basse')
-	if getPressure() > 1114 :
-
-		sendEmail('Pression Trop haute','Pression','haute')
-	elif getPressure() < 400 :
-
-		sendEmail('Pression Trop basse','Pression','basse')
-
 	# insertValue(str(getTemp()),str(getPressure()),str(getHumidity()))
 
 	tableau = selectValue(False)

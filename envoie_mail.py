@@ -7,6 +7,7 @@ import smtplib
 # Include de mes fichiers avec mes def
 from Recup_donnée_capteur import getTemp ,getHumidity , getPressure
 from Database import insertValue , selectValue,deleteValue , deleteTable , createTable , selectSpecificValue
+from Database_gestion import SelectALlMail
 from templates_email import debut_email , end_email
 # Vous ne possedez pas le fichier login_email.py
 # Pour des raisons de securite
@@ -19,7 +20,7 @@ def sendEmail (text,type,etat):
 	value = selectValue(False)
 	msg = MIMEMultipart()
 	msg['From'] = email()
-	msg['To'] = email_TO()
+	
 	msg['Subject'] = 'Probleme Supervision Serveur '+type+' '+etat+' '+str(heure)+':'+str(minute)+'\n'
 	message = debut_email()
 	message = 'Bonjour !'+ '<br />'
@@ -46,7 +47,11 @@ def sendEmail (text,type,etat):
 	# SI probleme a la ligne 41 c'esst normal 
 	# J'ai mis les mails dans un fichier a part que je ne mais pas dans le git
 	# Pour raison de securité
-	mailserver.sendmail(msg['From'], msg['To'], msg.as_string())
+	valeur = SelectALlMail()
+	#print(valeur)
+	for row in valeur :
+		to = row[1]
+		mailserver.sendmail(msg['From'], to, msg.as_string())
+		print('Envoie de mail à '+to+' '+str(type))
 	mailserver.quit()
-	print('Envoie de mail à '+msg['To']+' '+str(type))
 	return

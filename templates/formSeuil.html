@@ -17,14 +17,36 @@
 <body>
 	<section class="container" style="background-color: rgba(200,200,200,0.5)">
 		<a style="margin: auto;" href="/">Home</a>
+		<div align="center">
+			<h2>Paramétrages des valeurs seuils</h2>
+		</div>
 		<div>
-			<div>
-			<form style="margin-top: 6%" action="" method="post">
-				<h3></h3>
-				<div class="form-group">
-					<input type="email" name="email" id="email" placeholder="">
+			<div >
+			<form style="margin-top: 6%" action="/modifseuil" method="post">
+				<div class="row justify-content-center" >
+				{% for row in value %}
+					{% if row[0]%2 == 1 %}
+					<div class="col-sm-5 col-lg-2">
+						{% if row[3] == 'temperature' %}
+						<div>
+							<h3>Temperature</h3>
+						</div>
+						{% elif row[3] == 'pression' %}
+							<h3>Pression</h3>
+						{% elif row[3] == 'humidite' %}
+							<h3>Humidité</h3>
+						{% endif %}
+						{{ row[2] }}  : <input type="text" name="{{ row[0] }}" id="{{ row[0] }}"value="{{ row[1] }}">	
+					{% else %}
+						<!-- permet de prendre le type de valeur et le mettre dans la variable last -->
+						{{ row[2] }}  : <input type="text" name="{{ row[0] }}" id="{{ row[0] }}" value="{{ row[1] }}">
+					</div>
+					{% endif %}
+				{% endfor %}
+			</div>
+				<div align="center" style=" padding: 1%">
+					<input class="btn btn-primary" type="submit" value="Envoyer">
 				</div>
-				<input class="btn btn-primary" type="submit" value="Envoyer">
 			</form>
 		</div>
 		</div>

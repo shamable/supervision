@@ -152,6 +152,21 @@ def insertTableValue(value,type,etat):
 	conn.close()
 	return
 
+def updateTableValue(value,id):
+	conn = None
+	try :
+		conn = sqlite3.connect('ImportanteValue.db')
+	except Error as e:
+		print(e)
+	cur = conn.cursor()
+	# Cree nouvelle colonne pour ajouter si ses MIN OU MAX 
+	req = 'UPDATE seuilValue set value ="'+value+'" WHERE id='+id+';'
+	print(req)
+	cur.execute(req)
+	conn.commit()
+	conn.close()
+	return
+
 def deleteTableValue():
 	conn = None
 	try :

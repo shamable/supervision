@@ -2,7 +2,7 @@ from mqtt import connect_mqtt
 import sqlite3
 
 def insertValue(temp,press,humi):
-	# connect_mqtt(temp,humi,press)
+	# connect_mqtt(temp,humi,press) !!!
 	conn = None
 	try :
 		conn = sqlite3.connect('supervision.db')
