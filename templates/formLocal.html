@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="utf-8">
+	<title>{{title}}</title>
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/datatables.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/main.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/bootstrap.min.css')}}">
+	<link rel="stylesheet" href="{{url_for('static', filename='css/datable_css/dataTables.bootstrap.css')}}" type="text/css">
+	<link rel="stylesheet" href="{{url_for('static', filename='css/datable_css/dataTables.bootstrap4.css')}}" type="text/css">
+	<link rel="stylesheet" href="{{url_for('static', filename='css/datable_css/dataTables.foundation.css')}}" type="text/css">
+	<link rel="stylesheet" href="{{url_for('static', filename='css/datable_css/dataTables.jqueryui.css')}}" type="text/css">
+	<link rel="stylesheet" href="{{url_for('static', filename='css/datable_css/dataTables.semanticui.css')}}" type="text/css">
+	<link rel="stylesheet" href="{{url_for('static', filename='css/datable_css/jquery.dataTables.css')}}" type="text/css">
+</head>
+<body>
+	<section class="container " style="background-color: rgba(200,200,200,0.5)">
+		<a style="margin: auto;" href="/">Home</a>
+		<div align="center">
+			<h2>Fomulaire de la localisation du rasberry</h2>
+		</div>
+		<div>
+			<form style="margin-top: 6%" action="/modifLocal" method="post">
+				<div align="center">
+					Nom : {{ valeur[3] }} 
+					<br>
+					Adresse : {{ valeur[2] }} {{ valeur[1] }}
+					<br>
+					<a style="color: rgb(255,0,0)" onclick="modif()">Cliquez pour Modifier</a>
+					<div id="modif" style="display: none">
+						Nom : <input style="margin: 1%" type="text" id="name" name="name" value="{{valeur[3]}}">
+						<br>
+						Numéro : <input style="margin: 1%" type="text" id="num" name="num" value="{{valeur[2]}}">
+						<br>
+						Adresse : <input style="margin: 1%" type="text" id="adresse" name="adresse" value="{{valeur[1]}}">
+						<div align="center" style=" padding: 1%">
+							<input class="btn btn-primary" type="submit" value="Envoyer">
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</section>
+
+<script src="{{url_for('static', filename='js/jquery-3.4.1.js')}}"></script>
+<script src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
+<script src="{{url_for('static', filename='js/datatables.js')}}"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+	function modif(){
+		var elem = document.getElementById('modif');
+		if(elem.style.display == 'block'){
+			elem.style.display = 'none';
+		}else{elem.style.display = 'block'}
+	}</script>
+</body>
+</html>

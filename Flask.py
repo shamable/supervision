@@ -6,17 +6,40 @@ import socket
 import os
 from pprint import pprint
 from Database import insertValue , selectValue,deleteValue , deleteTable , createTable , selectSpecificValue , selectAllValue
-from Database_gestion import SelectALlMail,CreateTableEmail,deleteTableEmail , SelectSeuilValue , CreateTableValue, deleteTableValue, InsertTableEmail,selectspecificMail,deleteOneEmail,insertTableValue ,updateTableValue
+
+# Table adresse mail requete
+from Database_gestion import SelectALlMail,CreateTableEmail,deleteTableEmail , InsertTableEmail, selectspecificMail, deleteOneEmail
+
+# Table valeur seuil requete
+from Database_gestion import  SelectSeuilValue , CreateTableValue, deleteTableValue,insertTableValue ,updateTableValue
+
+# Table localisation requete
+from Database_gestion import updateTableLocalisation, insertTableLocalsation, createTableLocalisation , SelectLocalisation
 from envoie_mail import sendEmail
 
 import time 
+
+# Rajouter le code qui permet de lance le programme python de datainsert.py
 
 # plus tard : https://freeboard.io
 # Plus tard : www.myconstellation.io
 
 app= Flask(__name__)
 
-
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# 
+# Modification de la façon d'inserez les valeurs dans la base de données(BDD)
+# 
+# Elle ne se fait plus quand quelqung va sur la route("/")
+#
+# Maintenant il faut lancer le fichier datainsert.py dans le dossier supervision 
+# Il enregistrera les valeurs toutes les 5min dans la BDD 
+# Pour cela Ouvrir un terminal faire  cd Document/supervision
+# Puis python3 datainsert.py
+#
+# Apres avoir lancée le fichier datainsert.py vous pouvez lancer votre serveur sur un autre terminal
+#
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 @app.route("/histo")
 def histo():
 	pressiontable = []
@@ -62,6 +85,11 @@ def deleteEmail(idmail):
 	deleteOneEmail(idmail)
 	return redirect("/mail")
 
+@app.route("/mailtest",methods=['POST'])
+def mailtest():
+	sendEmail('Test','Test','Test')
+	return redirect("/mail")
+
 
 @app.route("/gT/<rep>/<date>")
 def graTemp (rep,date):
@@ -73,11 +101,11 @@ def graTemp (rep,date):
 		rep = "Temperature"
 		color = 'rgb(255,0,0)'
 	elif rep == "hum":
-		valeur = selectSpecificValue('pressure',date)
+		valeur = selectSpecificValue('humidite',date)
 		rep = "Humidite"
 		color = 'rgb(0,0,255)'
 	elif rep == "pres":
-		valeur = selectSpecificValue('humidite',date)
+		valeur = selectSpecificValue('pressure',date)
 		rep = "Pression"
 		color = 'rgb(0, 255,0)'
 	annee=str(d)[:4]
@@ -155,6 +183,21 @@ def formSeuil():
 	value = valeur)
 
 
+@app.route("/formLocal")
+def formLocal():
+	titre = "Adressse du local"
+	valeur = SelectLocalisation()
+	return render_template("formLocal.html",
+	title = titre,
+	valeur = row)
+
+@app.route("/modifLocal",methods=['POST'])
+def modifLocal():
+	nom = request.form['name']
+	num = request.form['num']
+	adresse = request.form['adresse']
+	updateTableLocalisation(adresse,str(num),nom,'1')
+	return redirect("/formLocal")
 
 @app.route("/connect",methods=['POST'])
 def connect():
@@ -192,32 +235,12 @@ def home():
 	humiditetable = []
 	temperaturetable = []
 	horairetable = []
-	valeur = SelectSeuilValue()
-	for row in valeur :
-		print(row)
-		if row[0] == 1 :
-			if int(getTemp()) < int(row[1]) :
-				sendEmail('Temperature Trop basse','temperature','basse')
-		if row[0] == 2 : 
-			if int(getTemp()) > int(row[1]) :
-				sendEmail('Temperature Trop haute','temperature','haute')
-		if row[0] == 3 :
-			if int(getPressure()) < float(row[1]) :
-				sendEmail('Pression Trop basse','Pression','basse')
-		if row[0] == 4 : 
-			if int(getPressure()) > float(row[1]) :
-				sendEmail('Pression Trop haute','Pression','haute')
-		if row[0] == 5 :
-			if int(getHumidity()) < int(row[1]) :
-				sendEmail('Humidité Trop basse','Humidité','basse')
-		if row[0] == 6 : 
-			if int(getHumidity()) > int(row[1]) :
-				sendEmail('Humidité Trop haute','Humidité','haute')
 	d= datetime.now()
 	y = d.strftime('%Y-%m-%d')
-	# insertValue(str(getTemp()),str(getPressure()),str(getHumidity()))
-
 	tableau = selectValue(False)
+	localisation = SelectLocalisation()
+	for row in localisation:
+		name = row[3]
 	# ATTENTION LAVEC L'HORAIRE DE LA BDD h-2(en été) h-1(hiver)  
 	for row in tableau:
 		pressiontable.append(row[1]/10)
@@ -236,7 +259,8 @@ def home():
 		humiditegraph = humiditetable,
 		temperaturegraph = temperaturetable,
 		timegraph = horairetable,
-		session = session
+		session = session,
+		name = name
 		)
 
 if __name__ =="__main__":

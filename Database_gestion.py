@@ -1,6 +1,5 @@
 import sqlite3
 
-# Definition permettant de recuperer les adresse mails en tant que admin pour pouvoir les supprimer au besoin
 def SelectALlMail():
 	conn = None
 	valeur =[]
@@ -115,9 +114,6 @@ def SelectSeuilValue():
 	conn.close()
 	return valeur
 
-# Creer la def pour l'instertion de valeur et ensutie la modification 
-
-
 def CreateTableValue():
 	conn = None
 	try :
@@ -180,3 +176,64 @@ def deleteTableValue():
 	conn.commit()
 	conn.close()
 	return
+
+# ----------------------------------------------------------------------------------------------
+
+def createTableLocalisation():
+	conn = None
+	try :
+		conn = sqlite3.connect('ImportanteValue.db')
+	except Error as e:
+		print(e)
+	cur = conn.cursor()
+	req = '''CREATE TABLE localisation (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		adresse varchar,
+		nb int,
+		name varchar)'''
+	cur.execute(req)
+	conn.commit()
+	conn.close()
+	return
+
+def insertTableLocalsation(adresse,nb,name):
+	conn = None
+	try :
+		conn = sqlite3.connect('ImportanteValue.db')
+	except Error as e:
+		print(e)
+	cur = conn.cursor()
+	req = 'INSERT INTO localisation (adresse,nb,name) VALUES("'+str(adresse)+'","'+nb+'","'+name+'");'
+	cur.execute(req)
+	conn.commit()
+	conn.close()
+	return
+
+def updateTableLocalisation(adresse,nb,name,id):
+	conn = None
+	try :
+		conn = sqlite3.connect('ImportanteValue.db')
+	except Error as e:
+		print(e)
+	cur = conn.cursor()
+	req = 'UPDATE localisation set adresse ="'+adresse+'",nb='+nb+',name="'+name+'" WHERE id='+id+';'
+	cur.execute(req)
+	conn.commit()
+	conn.close()
+	return
+
+def SelectLocalisation():
+	valeur = []
+	conn = None
+	try :
+		conn = sqlite3.connect('ImportanteValue.db')
+	except Error as e:
+		print(e)
+	cur = conn.cursor()
+	req = 'SELECT * FROM localisation WHERE id=1'
+	result = cur.execute(req)
+	for row in result:
+		valeur.append(row)
+	conn.commit()
+	conn.close()
+	return valeur

@@ -19,28 +19,33 @@
 		<a style="margin: auto;" href="/">Home</a>
 		<div>
 			<table align="center" border="1" >
-			<tr align="center">
-				<td class="sorting_1">#</td>
-				<td class="sorting_1">Mail</td>
-				{# Ne mettre sa que pour les admins #}
-				<td class="sorting_1">Mot de passe</td>
-				<td class="sorting_1">Role</td>
-				<td class="sorting_1">Supprimer</td>
-			</tr>
-			{% for row in mail %}
-			<tr align="center">
-				<td class="sorting_1">{{row[0]}}</td>
-				<td class="sorting_1">{{row[1]}}</td>
-				<td class="sorting_1">{{row[2]}}</td>
-				{%if row[3] == 'T' %}
+				<tr align="center">
+					<td class="sorting_1">#</td>
+					<td class="sorting_1">Mail</td>
+					{# Ne mettre sa que pour les admins #}
+					<td class="sorting_1">Mot de passe</td>
+					<td class="sorting_1">Role</td>
+					<td class="sorting_1">Supprimer</td>
+				</tr>
+				{% for row in mail %}
+				<tr align="center">
+					<td class="sorting_1">{{row[0]}}</td>
+					<td class="sorting_1">{{row[1]}}</td>
+					<td class="sorting_1">{{row[2]}}</td>
+					{%if row[3] == 'T' %}
 					<td class="sorting_1">Techinicien</td>
-				{% elif row[3] == 'A' %}
+					{% elif row[3] == 'A' %}
 					<td class="sorting_1">Admin</td>
-				{% endif %}
-				<td class="sorting_1"><a href="/deleteEmail/{{row[0]}}">Supprimer</a></td>
-			</tr>
-			{%endfor%}
-		</table>
+					{% endif %}
+					<td class="sorting_1"><a href="/deleteEmail/{{row[0]}}">Supprimer</a></td>
+				</tr>
+				{%endfor%}
+			</table>
+		</div>
+		<div class="justify-content-center">
+			<form style="padding: 1%" action="/mailtest" method="post" align="center">
+				<input class="btn btn-primary" type="submit" value="Envoyer">
+			</form>
 		</div>
 	</section>
 	

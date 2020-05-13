@@ -24,6 +24,7 @@
 </head>
 <body><!--style="background-color: #3B3B3B"-->
 	<section class="container" style="background-color: rgba(200,200,200,0.5)">
+		{{ name }}
 		<h2 align="center" style="margin-top:3%;margin-bottom:3%;color:#ff0000">Details du rasberry</h2>
 		<h4 align="center" style="margin-bottom:2%;color:#0000ff">{{ title }}</h4>
 	</section>
@@ -32,6 +33,7 @@
 		{% if session['admin'] == True %}
 		<a style="margin: auto; margin-right: 5%;" href="/mail">Adresse Mail</a>
 		<a style="margin: auto; margin-right: 5%;" href="/formSeuil">Formulaire Seuil</a>
+		<a style="margin: auto; margin-right: 5%;" href="/formLocal">Formulaire Localisation</a>
 		{% endif %}
 		<a style="margin: auto; margin-right: 5%;" href="/gT/temp/{{date}}">Voir Graph temp</a>
 		<a style="margin: auto; margin-right: 5%;" href="/gT/hum/{{date}}">Voir Graph humidité</a>
